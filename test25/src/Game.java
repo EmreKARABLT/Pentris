@@ -10,7 +10,7 @@ public class Game extends java.util.Timer {
     public static final int HEIGHT = 20;
     public static final int WIDTH = 10;
     public static boolean isGameOver = false;
-
+    static int tick = 1000;
     static int score = 0;
     public static int pieceID;
     public static UI ui = new UI(WIDTH , HEIGHT , 30);
@@ -56,7 +56,7 @@ public class Game extends java.util.Timer {
             }
             if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 
-                t.setDelay(100);
+                t.setDelay(tick/5);
             }
         }
 
@@ -64,7 +64,7 @@ public class Game extends java.util.Timer {
         public void keyReleased(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 
-                t.setDelay(300);
+                t.setDelay(tick);
             }
         }
     };
@@ -257,7 +257,7 @@ public class Game extends java.util.Timer {
         JFrame f = UI.window;
         Game g = new Game();
         f.addKeyListener(keys);
-        t =new Timer(300 , al);
+        t =new Timer(tick , al);
         t.start();
     }
 
