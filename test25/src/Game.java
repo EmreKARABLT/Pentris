@@ -51,19 +51,27 @@ public class Game extends java.util.Timer {
 //
                 moveRight(field , piece );
             }
-            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            if (e.getKeyCode() == KeyEvent.VK_Z) {
                 rotation(field);
             }
             if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 
                 t.setDelay(tick/5);
             }
+            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+
+                t.setDelay(tick/999999999);
+            }
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-
+            
+                t.setDelay(tick);
+            }
+            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            
                 t.setDelay(tick);
             }
         }
