@@ -1,2 +1,6 @@
 # private25
-test25 is the main folder of our projects (includes src folder with .java files - the csv database)
+Welcome friends!
+
+Tips:
+- Use GitHub Desktop
+- Don't change stuff if you don't know what you are doing =)
