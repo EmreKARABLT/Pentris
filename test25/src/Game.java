@@ -220,7 +220,7 @@ public class Game extends java.util.Timer {
             }
             if( isFilled ){
                 numberOfComLines++;
-                score ++;
+                score++;
                 System.out.printf("Your score = %d " ,score );
                 for(int l = 0 ; l < field[0].length ; l++){
                     field[i][l] = -10;
@@ -232,9 +232,14 @@ public class Game extends java.util.Timer {
                 for(int j = 0 ; j < field[0].length ; j++){
                     if(field[i][j] == -10){
                         int[] emptyRow = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
-                        while(i >= 1 ){
-                            field[i] = emptyRow;
-                            field[i] = field[i-1];
+                        while(i >= 0 ){
+                            if(i == 0 ){
+                                field[i] = emptyRow ;
+                                break ;
+                            }else{
+                                field[i] = emptyRow;
+                                field[i] = field[i-1];
+                            }
                             i--;
                             numberOfComLines--;
                         }
