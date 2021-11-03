@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.awt.event.KeyEvent;
@@ -19,7 +20,9 @@ public class Game extends java.util.Timer {
     public static int currentMutation = 0 ;
     public static int[][] field ;
     public static int[][] piece ;
+    public static ArrayList<Integer> pieces = new ArrayList<Integer>(12);
     public static ActionListener al = new ActionListener() {
+    public static int counter = 0; 
         @Override
         public void actionPerformed(ActionEvent e) {
                 if(isGameOver){
@@ -79,8 +82,8 @@ public class Game extends java.util.Timer {
 
     public Game  () throws InterruptedException {
         field = createAnEmptyGrid(HEIGHT , WIDTH );
-        piece = piecePicker();
-        placeTopPiece(field );
+        piece = piecePicker(false);
+        placeTopPiece(field);
         System.out.println(field.length  + " " + field[0].length);
     }
     public static int[][] createAnEmptyGrid(int x , int y ){
@@ -90,13 +93,21 @@ public class Game extends java.util.Timer {
         }
         return field;
     }
-    public static int[][] piecePicker() {
+    public static int[][] piecePicker(boolean firstcall) {
+        if (pieces.size()<1){
+            for (int i = 0; i<12; i++) pieces.add(i);
+        }
+        //System.out.println( Arrays.toString(pieces.toArray()));
         Random ran = new Random();
-        pieceID = ran.nextInt(12);
+        int randomInt = ran.nextInt(pieces.size());
+        pieceID = pieces.get(randomInt);
+        System.out.println("PieceID = " + pieceID);
+        if (firstcall) pieces.remove(randomInt);
         currentMutation = 0 ;
         return PentominoDatabase.data[pieceID][currentMutation];
     }
     public static int[][] placeTopPiece(int[][] field) {
+        System.out.println(Arrays.toString(pieces.toArray()));
         // I will take what was produced from the piecePicker method
         try{
             Thread.sleep(200);
@@ -106,7 +117,7 @@ public class Game extends java.util.Timer {
         }
         currentX = (WIDTH/2)-1 ;
         currentY = 0;
-        piece = piecePicker();
+        piece = piecePicker(true);
         if(!isGameOver && isValidPutPiece(field, piece, currentX, currentY)){
             addPiece(field, piece, currentX, currentY);
         }else {
@@ -139,7 +150,6 @@ public class Game extends java.util.Timer {
             }
         }
         ui.setState(field);
-
         return field;
     }
     public static int[][] remove(int[][] field, int[][] piece ) {
@@ -160,7 +170,7 @@ public class Game extends java.util.Timer {
             currentY++;
         }else{
             addPiece(field , piece , currentX , currentY);
-            piece = piecePicker();
+            piece = piecePicker(false);
             placeTopPiece(field);
         }
         ui.setState(field);
@@ -196,7 +206,10 @@ public class Game extends java.util.Timer {
         if(isGameOver){return field;}
         remove(field , piece );
         int[][] prevMut = piece;
-        int[][] nextMut = rotateArrayCW(prevMut);
+        if ( currentMutation == 3){ 
+            currentMutation = 0; 
+        } else currentMutation++;
+        int[][] nextMut = rotateArrayCW(currentMutation);
         if (isValidPutPiece(field , nextMut , currentX , currentY ) ) {
             piece = nextMut;
             addPiece(field,piece,currentX , currentY );
@@ -251,20 +264,10 @@ public class Game extends java.util.Timer {
 
     //////////////!!!!!!!!!!!!!!!!!!!!!! COPIED FROM STACKOVERFLOW !!!!!!!!!!!!!!!!!///////////////////////////
     //REWRITE THE ROTATEARRAYCW
-    static int[][] rotateArrayCW(int[][] orig) {
-        final int rows = orig.length;
-        final int cols = orig[ 0 ].length;
-
-        final int[][] neo = new int[ cols ][ rows ];
-
-        for ( int r = 0; r < rows; r++ ) {
-            for ( int c = 0; c < cols; c++ ) {
-                neo[ c ][ rows - 1 - r ] = orig[ r ][ c ];
-            }
-        }
-
-        return neo;
-    }
+    static int[][] rotateArrayCW(int currentMutation) {
+        int[][] pieceToPlace =PentominoDatabase.data[pieceID][currentMutation];
+        return pieceToPlace;
+    }    
 
     public static void main(String[] args) throws InterruptedException {
         JFrame f = UI.window;
