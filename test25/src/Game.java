@@ -231,14 +231,32 @@ public class Game extends java.util.Timer {
             	return rotationPlacer(nextMut, prevMut);
             }   else if (currentMutation == 2){
                 currentX-= 2;
-                currentY+= 2; 
+                currentY+= 1; 
             	return rotationPlacer(nextMut, prevMut);
             }   else if (currentMutation == 3){
                 currentX+= 1;
-                currentY-= 1;  
+                currentY-= 0;  
             	return rotationPlacer(nextMut, prevMut);
             } 
-            
+        } if (pieceID == 4 || pieceID == 9){
+            if (currentMutation == 0){
+                currentX+= 0;
+                currentY+= 1; 
+                return rotationPlacer(nextMut, prevMut);
+            }   else if (currentMutation == 1){
+                currentX+= 1;
+                currentY-= 1; 
+            	return rotationPlacer(nextMut, prevMut);
+            }   else if (currentMutation == 2){
+                currentX-= 1;
+                currentY+= 0; 
+            	return rotationPlacer(nextMut, prevMut);
+            }   else if (currentMutation == 3){
+                currentX+= 0;
+                currentY-= 0;  
+            	return rotationPlacer(nextMut, prevMut);
+            } 
+
         } return rotationPlacer(nextMut, prevMut);
         }
 
