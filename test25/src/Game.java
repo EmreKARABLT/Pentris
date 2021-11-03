@@ -101,13 +101,12 @@ public class Game extends java.util.Timer {
         Random ran = new Random();
         int randomInt = ran.nextInt(pieces.size());
         pieceID = pieces.get(randomInt);
-        System.out.println("PieceID = " + pieceID);
+        //System.out.println("PieceID = " + pieceID);
         if (firstcall) pieces.remove(randomInt);
         currentMutation = 0 ;
         return PentominoDatabase.data[pieceID][currentMutation];
     }
     public static int[][] placeTopPiece(int[][] field) {
-        System.out.println(Arrays.toString(pieces.toArray()));
         // I will take what was produced from the piecePicker method
         try{
             Thread.sleep(200);
