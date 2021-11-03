@@ -209,7 +209,77 @@ public class Game extends java.util.Timer {
             currentMutation = 0; 
         } else currentMutation++;
         int[][] nextMut = rotateArrayCW(currentMutation);
-        if (isValidPutPiece(field , nextMut , currentX , currentY ) ) {
+        if (pieceID == 1){
+            if (currentMutation == 1 || currentMutation == 3){
+                currentX+= 2;
+                currentY-= 2; 
+                if (isValidPutPiece(field , nextMut , currentX , currentY ) ) {
+                    piece = nextMut;
+                    addPiece(field,piece,currentX , currentY );
+                }else {
+                    addPiece(field, prevMut, currentX, currentY);
+                }
+                ui.setState(field);
+                return field;
+            }   else if (currentMutation == 0 || currentMutation == 2){
+                currentX-= 2;
+                currentY+= 2;
+            	if (isValidPutPiece(field , nextMut , currentX , currentY ) ) {
+                piece = nextMut; 
+                addPiece(field,piece,currentX , currentY );
+                } else {
+                    addPiece(field, prevMut, currentX, currentY);
+                }
+                ui.setState(field);
+                return field;
+            } 
+        } if (pieceID == 7 || pieceID == 8 || pieceID == 10){
+            if (currentMutation == 0){
+                currentX+= 0;
+                currentY+= 1; 
+                if (isValidPutPiece(field , nextMut , currentX , currentY ) ) {
+                    piece = nextMut;
+                    addPiece(field,piece,currentX , currentY );
+                }else {
+                    addPiece(field, prevMut, currentX, currentY);
+                }
+                ui.setState(field);
+                return field;
+            }   else if (currentMutation == 1){
+                currentX+= 1;
+                currentY-= 2; 
+            	if (isValidPutPiece(field , nextMut , currentX , currentY ) ) {
+                piece = nextMut; 
+                addPiece(field,piece,currentX , currentY );
+                } else {
+                    addPiece(field, prevMut, currentX, currentY);
+                }
+                ui.setState(field);
+                return field;
+            }   else if (currentMutation == 2){
+                currentX-= 2;
+                currentY+= 2; 
+            	if (isValidPutPiece(field , nextMut , currentX , currentY ) ) {
+                piece = nextMut; 
+                addPiece(field,piece,currentX , currentY );
+                } else {
+                    addPiece(field, prevMut, currentX, currentY);
+                }
+                ui.setState(field);
+                return field;
+            }   else if (currentMutation == 3){
+                currentX+= 1;
+                currentY-= 1;  
+            	if (isValidPutPiece(field , nextMut , currentX , currentY ) ) {
+                piece = nextMut; 
+                addPiece(field,piece,currentX , currentY );
+                } else {
+                    addPiece(field, prevMut, currentX, currentY);
+                }
+                ui.setState(field);
+                return field;
+            } 
+        } else if (isValidPutPiece(field , nextMut , currentX , currentY ) ) {
             piece = nextMut;
             addPiece(field,piece,currentX , currentY );
         }else {
@@ -217,7 +287,7 @@ public class Game extends java.util.Timer {
         }
         ui.setState(field);
         return field;
-    }
+        }
     static int[][] deleteTheLines(){
 
         int numberOfComLines = 0 ;
@@ -261,8 +331,6 @@ public class Game extends java.util.Timer {
         return field;
     }
 
-    //////////////!!!!!!!!!!!!!!!!!!!!!! COPIED FROM STACKOVERFLOW !!!!!!!!!!!!!!!!!///////////////////////////
-    //REWRITE THE ROTATEARRAYCW
     static int[][] rotateArrayCW(int currentMutation) {
         int[][] pieceToPlace =PentominoDatabase.data[pieceID][currentMutation];
         return pieceToPlace;
