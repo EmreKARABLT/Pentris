@@ -215,6 +215,7 @@ public class Game extends java.util.Timer {
                 currentY-= 2; 
                 return rotationPlacer(nextMut, prevMut);
             }   else if (currentMutation == 0 || currentMutation == 2){
+                if (currentX >=8) currentX = 7;
                 currentX-= 2;
                 currentY+= 2;
             	return rotationPlacer(nextMut, prevMut);
@@ -222,6 +223,7 @@ public class Game extends java.util.Timer {
 
         } if (pieceID == 7 || pieceID == 8 || pieceID == 10){
             if (currentMutation == 0){
+                if (currentX >=8) currentX = 6;
                 currentX+= 0;
                 currentY+= 1; 
                 return rotationPlacer(nextMut, prevMut);
@@ -240,6 +242,7 @@ public class Game extends java.util.Timer {
             } 
         } if (pieceID == 4 || pieceID == 9){
             if (currentMutation == 0){
+                if (currentX == 8) currentX = 7;
                 currentX+= 0;
                 currentY+= 1; 
                 return rotationPlacer(nextMut, prevMut);
@@ -263,7 +266,6 @@ public class Game extends java.util.Timer {
     public static int[][] rotationPlacer (int[][] nextMut, int[][] prevMut){
         if (currentX<0) currentX = 0;
         if (currentY<0) currentY = 0;
-        if ((currentX+piece.length)>field.length)currentX=(field.length-piece.length); 
         if (isValidPutPiece(field , nextMut , currentX , currentY ) ) {
             piece = nextMut; 
             addPiece(field,piece,currentX , currentY );
