@@ -205,77 +205,129 @@ public class Game extends java.util.Timer {
         if(isGameOver){return field;}
         remove(field , piece );
         int[][] prevMut = piece;
+        int caseNumber;
         if ( currentMutation == 3){ 
             currentMutation = 0; 
         } else currentMutation++;
         int[][] nextMut = rotateArrayCW(currentMutation);
         if (pieceID == 1){
             if (currentMutation == 1 || currentMutation == 3){
-                currentX+= 2;
-                currentY-= 2; 
-                return rotationPlacer(nextMut, prevMut);
+                caseNumber = 1;
+                return rotationPlacer(nextMut, prevMut, caseNumber);
             }   else if (currentMutation == 0 || currentMutation == 2){
                 if (currentX >=8) currentX = 7;
-                currentX-= 2;
-                currentY+= 2;
-            	return rotationPlacer(nextMut, prevMut);
+                caseNumber = 2;
+            	return rotationPlacer(nextMut, prevMut, caseNumber);
             }
 
         } if (pieceID == 7 || pieceID == 8 || pieceID == 10){
             if (currentMutation == 0){
                 if (currentX >=8) currentX = 6;
-                currentX+= 0;
-                currentY+= 1; 
-                return rotationPlacer(nextMut, prevMut);
+                caseNumber = 3; 
+                return rotationPlacer(nextMut, prevMut, caseNumber);
             }   else if (currentMutation == 1){
-                currentX+= 1;
-                currentY-= 2; 
-            	return rotationPlacer(nextMut, prevMut);
+                caseNumber = 4;
+            	return rotationPlacer(nextMut, prevMut, caseNumber);
             }   else if (currentMutation == 2){
-                currentX-= 2;
-                currentY+= 1; 
-            	return rotationPlacer(nextMut, prevMut);
+                caseNumber = 5;
+            	return rotationPlacer(nextMut, prevMut, caseNumber);
             }   else if (currentMutation == 3){
-                currentX+= 1;
-                currentY-= 0;  
-            	return rotationPlacer(nextMut, prevMut);
+                caseNumber = 6; 
+            	return rotationPlacer(nextMut, prevMut, caseNumber);
             } 
         } if (pieceID == 4 || pieceID == 9){
             if (currentMutation == 0){
                 if (currentX == 8) currentX = 7;
-                currentX+= 0;
-                currentY+= 1; 
-                return rotationPlacer(nextMut, prevMut);
+                caseNumber = 7; 
+                return rotationPlacer(nextMut, prevMut, caseNumber);
             }   else if (currentMutation == 1){
-                currentX+= 1;
-                currentY-= 1; 
-            	return rotationPlacer(nextMut, prevMut);
+                caseNumber = 8;
+            	return rotationPlacer(nextMut, prevMut, caseNumber);
             }   else if (currentMutation == 2){
-                currentX-= 1;
-                currentY+= 0; 
-            	return rotationPlacer(nextMut, prevMut);
+                caseNumber = 9;
+            	return rotationPlacer(nextMut, prevMut, caseNumber);
             }   else if (currentMutation == 3){
-                currentX+= 0;
-                currentY-= 0;  
-            	return rotationPlacer(nextMut, prevMut);
+                caseNumber = 0;
+            	return rotationPlacer(nextMut, prevMut, caseNumber);
             } 
 
-        } return rotationPlacer(nextMut, prevMut);
+        } {
+        caseNumber = 0;
+        return rotationPlacer(nextMut, prevMut, caseNumber);
+        }
         }
 
-    public static int[][] rotationPlacer (int[][] nextMut, int[][] prevMut){
+    public static int[][] rotationPlacer (int[][] nextMut, int[][] prevMut, int caseNumber){
+        if (caseNumber == 1){
+            currentX+= 2;
+            currentY-= 2;
+        } if (caseNumber == 2){
+            currentX-= 2;
+            currentY+= 2;
+        } if (caseNumber == 3){
+            currentX+= 0;
+            currentY+= 1;
+        } if (caseNumber == 4){
+            currentX+= 1;
+            currentY-= 2; 
+        } if (caseNumber == 5){
+            currentX-= 2;
+            currentY+= 1; 
+        } if (caseNumber == 6){
+            currentX+= 1;
+            currentY-= 0; 
+        } if (caseNumber == 7){
+            currentX+= 0;
+            currentY+= 1;
+        } if (caseNumber == 8){
+            currentX+= 1;
+            currentY-= 1; 
+        } if (caseNumber == 9){
+            currentX-= 1;
+            currentY+= 0; 
+        }   
+        
         if (currentX<0) currentX = 0;
         if (currentY<0) currentY = 0;
         if (isValidPutPiece(field , nextMut , currentX , currentY ) ) {
-            piece = nextMut; 
+            piece = nextMut;
             addPiece(field,piece,currentX , currentY );
             } else {
+                if (caseNumber == 1){
+                    currentX-= 2;
+                    currentY+= 2;
+                } if (caseNumber == 2){
+                    currentX+= 2;
+                    currentY-= 2;
+                } if (caseNumber == 3){
+                    currentX-= 0;
+                    currentY-= 1;
+                } if (caseNumber == 4){
+                    currentX+= 1;
+                    currentY+= 2; 
+                } if (caseNumber == 5){
+                    currentX+= 2;
+                    currentY-= 1; 
+                } if (caseNumber == 6){
+                    currentX-= 1;
+                    currentY+= 0; 
+                } if (caseNumber == 7){
+                    currentX-= 0;
+                    currentY-= 1;
+                } if (caseNumber == 8){
+                    currentX-= 1;
+                    currentY+= 1; 
+                } if (caseNumber == 9){
+                    currentX+= 1;
+                    currentY-= 0; 
+                }
                 addPiece(field, prevMut, currentX, currentY);
                 currentMutation--;
             }
             ui.setState(field);
             return field;
     }    
+
     static int[][] deleteTheLines(){
 
         int numberOfComLines = 0 ;
