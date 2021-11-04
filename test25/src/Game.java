@@ -261,6 +261,9 @@ public class Game extends java.util.Timer {
         }
 
     public static int[][] rotationPlacer (int[][] nextMut, int[][] prevMut){
+        if (currentX<0) currentX = 0;
+        if (currentY<0) currentY = 0;
+        if ((currentX+piece.length)>field.length)currentX=(field.length-piece.length); 
         if (isValidPutPiece(field , nextMut , currentX , currentY ) ) {
             piece = nextMut; 
             addPiece(field,piece,currentX , currentY );
