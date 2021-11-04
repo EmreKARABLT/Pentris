@@ -271,6 +271,7 @@ public class Game extends java.util.Timer {
             addPiece(field,piece,currentX , currentY );
             } else {
                 addPiece(field, prevMut, currentX, currentY);
+                currentMutation--;
             }
             ui.setState(field);
             return field;
