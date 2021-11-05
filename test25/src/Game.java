@@ -235,7 +235,7 @@ public class Game extends java.util.Timer {
             currentMutation = 0;
         } else currentMutation++;
         int[][] nextMut = nextMutation(currentMutation);
-//        remove(field , piece );
+        remove(field , piece );
         if (pieceID == 1){
             if (currentMutation == 1 || currentMutation == 3){
                 caseNumber = 1;
@@ -283,7 +283,7 @@ public class Game extends java.util.Timer {
         }
     }
     public static int[][] rotationPlacer (int[][] nextMut, int[][] prevMut, int caseNumber){
-        remove(field , piece );
+        //remove(field , piece );
         if (caseNumber == 1){
             currentX+= 2;
             currentY-= 2;
@@ -350,7 +350,7 @@ public class Game extends java.util.Timer {
             addPiece(field, prevMut, currentX, currentY);
             currentMutation--;
         }
-//        ui.setState(field);
+        ui.setState(field);
         return field;
     }
     static int[][] deleteTheLines(){
