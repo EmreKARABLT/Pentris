@@ -14,7 +14,7 @@ public class Game extends java.util.Timer {
     static int tick = 1000;
     static int score = 0;
     public static int pieceID;
-    public static UI ui = new UI(WIDTH , HEIGHT , 30);
+    public static UI ui = new UI(WIDTH , HEIGHT , 25);
     public static int currentX = 0 ;
     public static int currentY = 0 ;
     public static int currentMutation = 0 ;
@@ -96,10 +96,7 @@ public class Game extends java.util.Timer {
 
     public Game  () throws InterruptedException {
         field = createAnEmptyGrid(HEIGHT , WIDTH );
-        System.out.println("cX " + currentX + " cY " + currentY);
         piece = piecePicker(false);
-        System.out.println("p.l  " + piece.length + " p[0].l  " + piece[0].length);
-
         placeTopPiece();
     }
     public static int[][] createAnEmptyGrid(int x , int y ){
@@ -115,7 +112,6 @@ public class Game extends java.util.Timer {
         if (pieces.size()<1){
             for (int i = 0; i<12; i++) pieces.add(i);
         }
-        //System.out.println( Arrays.toString(pieces.toArray()));
         Random ran = new Random();
         int randomInt = ran.nextInt(pieces.size());
         pieceID = pieces.get(randomInt);
@@ -129,8 +125,7 @@ public class Game extends java.util.Timer {
         piece = piecePicker(true);
         currentX = (WIDTH  - piece[0].length - 1 ) / 2  ;
         currentY = 0;
-        System.out.printf("currentX = %d , currentY = %d\n" , currentX , currentY);
-        System.out.println(pieceID);
+
         if(!isGameOver && isValidPutPiece(field, piece, currentX, currentY)){
             addPiece(field, piece, currentX, currentY);
         }else {
@@ -368,13 +363,14 @@ public class Game extends java.util.Timer {
         }
         int[] emptyRow = new int[WIDTH];
         Arrays.fill(emptyRow ,  -1 );
+
+        outer:
         while(numberOfComLines > 0 )
             for(int i = 0 ; i < HEIGHT ; i++){
                 for(int j = 0 ; j < WIDTH ; j++){
                     if(field[i][j] == -10){
-                        while(i>0 && numberOfComLines>0){
-                            if(i >=1) {
-                                System.out.println("woo");
+                        while(i>0){
+                            if(i >=0) {
                                 field[i] = emptyRow;
                                 field[i] = field[i - 1];
                                 i--;
@@ -383,6 +379,9 @@ public class Game extends java.util.Timer {
 
                         field[i] = emptyRow;
                         numberOfComLines--;
+                        if(numberOfComLines == 0 || i == 0 ){
+                            break outer;
+                        }
                     }
                 }
             }
