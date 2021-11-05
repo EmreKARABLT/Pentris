@@ -110,6 +110,8 @@ public class Game extends java.util.Timer {
         return field;
     }
     public static int[][] piecePicker(boolean firstcall) {
+        deleteTheLines();
+
         if (pieces.size()<1){
             for (int i = 0; i<12; i++) pieces.add(i);
         }
@@ -123,12 +125,7 @@ public class Game extends java.util.Timer {
     }
     public static int[][] placeTopPiece() {
         // I will take what was produced from the piecePicker method
-        try{
-            Thread.sleep(200);
-            deleteTheLines();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+
         piece = piecePicker(true);
         currentX = (WIDTH  - piece[0].length - 1 ) / 2  ;
         currentY = 0;
