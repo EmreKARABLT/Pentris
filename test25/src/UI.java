@@ -29,7 +29,7 @@ public class UI extends JPanel
       
 
         size = _size;
-        setPreferredSize(new Dimension(x * size, y * size));
+        setPreferredSize(new Dimension(x * size + 200, y * size + 10));
 
  
         window = new JFrame("SIGMAtetris");;
@@ -58,8 +58,9 @@ public class UI extends JPanel
     {
         Graphics2D localGraphics2D = (Graphics2D) g;
 
-        localGraphics2D.setColor(Color.LIGHT_GRAY);
+        localGraphics2D.setColor(Color.MAGENTA);
         localGraphics2D.fill(getVisibleRect());
+        localGraphics2D.setStroke(new BasicStroke(20.0F));
 
         //draw lines
         localGraphics2D.setColor(Color.GRAY);

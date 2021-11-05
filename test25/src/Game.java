@@ -9,7 +9,7 @@ import java.awt.event.KeyEvent;
 
 public class Game extends java.util.Timer {
     public static final int HEIGHT = 15;
-    public static final int WIDTH = 5;
+    public static final int WIDTH = 10;
     public static boolean isGameOver = false;
     static int tick = 1000;
     static int score = 0;
@@ -68,7 +68,7 @@ public class Game extends java.util.Timer {
                         isDropped = true ;
                     }
                 } catch (InterruptedException ex) {
-                    System.out.println(ex);
+                    //System.out.println(ex);
                 }
             }
         }
@@ -87,9 +87,9 @@ public class Game extends java.util.Timer {
 
     public Game  () throws InterruptedException {
         field = createAnEmptyGrid(HEIGHT , WIDTH );
-        System.out.println("cX " + currentX + " cY " + currentY);
+        //System.out.println("cX " + currentX + " cY " + currentY);
         piece = piecePicker(false);
-        System.out.println("p.l  " + piece.length + " p[0].l  " + piece[0].length);
+        //System.out.println("p.l  " + piece.length + " p[0].l  " + piece[0].length);
 
         placeTopPiece();
     }
@@ -123,8 +123,8 @@ public class Game extends java.util.Timer {
         piece = piecePicker(true);
         currentX = (WIDTH  - piece[0].length - 1 ) / 2  ;
         currentY = 0;
-        System.out.printf("currentX = %d , currentY = %d\n" , currentX , currentY);
-        System.out.println(pieceID);
+        //System.out.printf("currentX = %d , currentY = %d\n" , currentX , currentY);
+        //System.out.println(pieceID);
         if(!isGameOver && isValidPutPiece(field, piece, currentX, currentY)){
             addPiece(field, piece, currentX, currentY);
         }else {
@@ -316,8 +316,9 @@ public class Game extends java.util.Timer {
         if (currentX<0) currentX = 0;
         if (currentY<0) currentY = 0;
         if (isValidPutPiece(field , nextMut , currentX , currentY ) ) {
+            
+            addPiece(field,nextMut,currentX , currentY );
             piece = nextMut;
-            addPiece(field,piece,currentX , currentY );
         } else {
             if (caseNumber == 1){
                 currentX-= 2;
@@ -382,7 +383,7 @@ public class Game extends java.util.Timer {
                     if(field[i][j] == -10){
                         while(i>0 && numberOfComLines>0){
                             if(i >=1) {
-                                System.out.println("woo");
+                                //System.out.println("woo");
                                 field[i] = emptyRow;
                                 field[i] = field[i - 1];
                                 i--;
