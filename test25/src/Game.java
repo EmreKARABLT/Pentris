@@ -8,8 +8,8 @@ import java.util.Random;
 import java.awt.event.KeyEvent;
 
 public class Game extends java.util.Timer {
-    public static final int HEIGHT = 20;
-    public static final int WIDTH = 10;
+    public static final int HEIGHT = 15;
+    public static final int WIDTH = 5;
     public static boolean isGameOver = false;
     static int tick = 1000;
     static int score = 0;
@@ -28,7 +28,6 @@ public class Game extends java.util.Timer {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(isGameOver){
-                System.out.println("gameover");
                 t.stop();
             }
             try {
@@ -60,12 +59,14 @@ public class Game extends java.util.Timer {
                 rotation(field);
             }
             if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-
                 t.setDelay(tick/5);
             }
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 try {
+                    if(!isDropped){
                     instantDrop(field);
+                    isDropped = true ;
+                    }
                 } catch (InterruptedException ex) {
                     System.out.println(ex);
                 }
@@ -79,16 +80,18 @@ public class Game extends java.util.Timer {
                 t.setDelay(tick);
             }
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-
+                isDropped = false;
             }
         }
     };
 
     public Game  () throws InterruptedException {
         field = createAnEmptyGrid(HEIGHT , WIDTH );
+        System.out.println("cX " + currentX + " cY " + currentY);
         piece = piecePicker(false);
+        System.out.println("p.l  " + piece.length + " p[0].l  " + piece[0].length);
+
         placeTopPiece();
-        System.out.println(field.length  + " " + field[0].length);
     }
     public static int[][] createAnEmptyGrid(int x , int y ){
         int[][] field = new int[x][y] ;
@@ -105,7 +108,6 @@ public class Game extends java.util.Timer {
         Random ran = new Random();
         int randomInt = ran.nextInt(pieces.size());
         pieceID = pieces.get(randomInt);
-        //System.out.println("PieceID = " + pieceID);
         if (firstcall) pieces.remove(randomInt);
         currentMutation = 0 ;
         return PentominoDatabase.data[pieceID][currentMutation];
@@ -118,12 +120,15 @@ public class Game extends java.util.Timer {
         }catch (Exception e){
             e.printStackTrace();
         }
-        currentX = (WIDTH/2)-1 ;
-        currentY = 0;
         piece = piecePicker(true);
+        currentX = (WIDTH  - piece[0].length - 1 ) / 2  ;
+        currentY = 0;
+        System.out.printf("currentX = %d , currentY = %d\n" , currentX , currentY);
+        System.out.println(pieceID);
         if(!isGameOver && isValidPutPiece(field, piece, currentX, currentY)){
             addPiece(field, piece, currentX, currentY);
         }else {
+            System.out.println("GAME OVER");
             isGameOver = true; // Game over, buddy
         }
         return field;
@@ -183,11 +188,9 @@ public class Game extends java.util.Timer {
         while(currentY < HEIGHT) {
             remove(field, piece);
             if (isValidPutPiece(field, piece, currentX, currentY+1) ) {
-                System.out.println("this");
                 addPiece(field, piece, currentX, currentY + 1);
                 currentY++;
             } else {
-                System.out.println("that");
                 addPiece(field, piece, currentX, currentY);
                 piece = piecePicker(false);
                 placeTopPiece();
@@ -232,7 +235,7 @@ public class Game extends java.util.Timer {
         if ( currentMutation == 3){
             currentMutation = 0;
         } else currentMutation++;
-        int[][] nextMut = rotateArrayCW(currentMutation);
+        int[][] nextMut = nextMutation(currentMutation);
         if (pieceID == 1){
             if (currentMutation == 1 || currentMutation == 3){
                 caseNumber = 1;
@@ -279,7 +282,6 @@ public class Game extends java.util.Timer {
             return rotationPlacer(nextMut, prevMut, caseNumber);
         }
     }
-
     public static int[][] rotationPlacer (int[][] nextMut, int[][] prevMut, int caseNumber){
         if (caseNumber == 1){
             currentX+= 2;
@@ -347,16 +349,15 @@ public class Game extends java.util.Timer {
             addPiece(field, prevMut, currentX, currentY);
             currentMutation--;
         }
-        ui.setState(field);
+//        ui.setState(field);
         return field;
     }
-
     static int[][] deleteTheLines(){
 
         int numberOfComLines = 0 ;
-        for(int i = 0 ; i < field.length ; i++){
+        for(int i = 0 ; i < HEIGHT ; i++){
             boolean isFilled = true;
-            for (int j = 0; j < field[0].length; j++) {
+            for (int j = 0; j < WIDTH; j++) {
                 if (field[i][j] == -1) {
                     isFilled = false;
                     break;
@@ -366,35 +367,40 @@ public class Game extends java.util.Timer {
             if( isFilled ){
                 numberOfComLines++;
                 score++;
-                System.out.printf("Your score = %d " ,score );
+                System.out.printf("Your score = %d \n" ,score );
                 for(int l = 0 ; l < field[0].length ; l++){
                     field[i][l] = -10;
                 }
             }
         }
+        int[] emptyRow = new int[WIDTH];
+        Arrays.fill(emptyRow ,  -1 );
         while(numberOfComLines > 0 )
-            for(int i = 0 ; i < field.length ; i++){
-                for(int j = 0 ; j < field[0].length ; j++){
+            for(int i = 0 ; i < HEIGHT ; i++){
+                for(int j = 0 ; j < WIDTH ; j++){
                     if(field[i][j] == -10){
-                        int[] emptyRow = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
-                        while(i >= 0 ){
-                            if(i == 0 ){
-                                field[i] = emptyRow ;
-                                break ;
-                            }else{
-                                field[i] = emptyRow;
-                                field[i] = field[i-1];
+                            while(i>=0){
+                                if(i >1) {
+                                    System.out.println("woo");
+                                    field[i] = emptyRow;
+                                    field[i] = field[i - 1];
+                                }
+                                if(i==0){
+                                    field[i] =  emptyRow;
+                                    break;
+                                }
+                                i--;
                             }
-                            i--;
+                            field[i] = emptyRow;
                             numberOfComLines--;
                         }
                     }
                 }
-            }
+        ui.setState(field);
         return field;
     }
 
-    static int[][] rotateArrayCW(int currentMutation) {
+    static int[][] nextMutation(int currentMutation) {
         int[][] pieceToPlace =PentominoDatabase.data[pieceID][currentMutation];
         return pieceToPlace;
     }
