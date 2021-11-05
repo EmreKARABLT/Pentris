@@ -318,19 +318,19 @@ public class Search {
 	/**
 	 * Main function. Needs to be executed to start the basic search algorithm
 	 */
-	public static void main(String[] args) {
-		//Benchmark
-		int iterationTime = 1;
-		long startingTime =  System.currentTimeMillis();
-		for (int t = 0 ; t < iterationTime; t++){
-			search();
-		}
-		long finishingTime =  System.currentTimeMillis();
-		System.out.printf("For %d x %d grid with input size %d. Avarage time is %d miliseconds \n" , horizontalGridSize , verticalGridSize , input.length , (finishingTime - startingTime) / iterationTime);
-
-		//Method call of our search algorithm
-		search();
-
-	}
+//	public static void main(String[] args) {
+//		//Benchmark
+//		int iterationTime = 1;
+//		long startingTime =  System.currentTimeMillis();
+//		for (int t = 0 ; t < iterationTime; t++){
+//			search();
+//		}
+//		long finishingTime =  System.currentTimeMillis();
+//		System.out.printf("For %d x %d grid with input size %d. Avarage time is %d miliseconds \n" , horizontalGridSize , verticalGridSize , input.length , (finishingTime - startingTime) / iterationTime);
+//
+//		//Method call of our search algorithm
+//		search();
+//
+//	}
 
 }

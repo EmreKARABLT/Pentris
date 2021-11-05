@@ -20,15 +20,17 @@ public class Game extends java.util.Timer {
     public static int currentMutation = 0 ;
     public static int[][] field ;
     public static int[][] piece ;
+    public static boolean isDropped = false;
+    public static boolean isRotated = false;
     public static ArrayList<Integer> pieces = new ArrayList<Integer>(12);
     public static ActionListener al = new ActionListener() {
-    public static int counter = 0; 
+        public static int counter = 0;
         @Override
         public void actionPerformed(ActionEvent e) {
-                if(isGameOver){
-                    System.out.println("gameover");
-                    t.stop();
-                }
+            if(isGameOver){
+                System.out.println("gameover");
+                t.stop();
+            }
             try {
                 moveBottom(field);
             } catch (InterruptedException ex) {
@@ -48,7 +50,7 @@ public class Game extends java.util.Timer {
         public void keyPressed(KeyEvent e) {
 
             if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                moveLeft(field , piece );
+                moveLeft(field );
             }
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 //
@@ -62,20 +64,22 @@ public class Game extends java.util.Timer {
                 t.setDelay(tick/5);
             }
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-
-                t.setDelay(tick/999999999);
+                try {
+                    instantDrop(field);
+                } catch (InterruptedException ex) {
+                    System.out.println(ex);
+                }
             }
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            
+
                 t.setDelay(tick);
             }
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            
-                t.setDelay(tick);
+
             }
         }
     };
@@ -83,7 +87,7 @@ public class Game extends java.util.Timer {
     public Game  () throws InterruptedException {
         field = createAnEmptyGrid(HEIGHT , WIDTH );
         piece = piecePicker(false);
-        placeTopPiece(field);
+        placeTopPiece();
         System.out.println(field.length  + " " + field[0].length);
     }
     public static int[][] createAnEmptyGrid(int x , int y ){
@@ -106,7 +110,7 @@ public class Game extends java.util.Timer {
         currentMutation = 0 ;
         return PentominoDatabase.data[pieceID][currentMutation];
     }
-    public static int[][] placeTopPiece(int[][] field) {
+    public static int[][] placeTopPiece() {
         // I will take what was produced from the piecePicker method
         try{
             Thread.sleep(200);
@@ -164,13 +168,32 @@ public class Game extends java.util.Timer {
         if(isGameOver){return field;}
         remove(field , piece );
         if (currentY + piece.length < field.length && isValidPutPiece(field, piece, currentX, currentY + 1 ) ) {
-            remove(field, piece );
             addPiece(field, piece, currentX , currentY + 1);
             currentY++;
         }else{
             addPiece(field , piece , currentX , currentY);
             piece = piecePicker(false);
-            placeTopPiece(field);
+            placeTopPiece();
+        }
+        ui.setState(field);
+        return field;
+    }
+    public static int[][] instantDrop(int[][] field   ) throws InterruptedException {
+        if(isGameOver){return field;}
+        while(currentY < HEIGHT) {
+            remove(field, piece);
+            if (isValidPutPiece(field, piece, currentX, currentY+1) ) {
+                System.out.println("this");
+                addPiece(field, piece, currentX, currentY + 1);
+                currentY++;
+            } else {
+                System.out.println("that");
+                addPiece(field, piece, currentX, currentY);
+                piece = piecePicker(false);
+                placeTopPiece();
+                break;
+            }
+
         }
         ui.setState(field);
         return field;
@@ -188,7 +211,7 @@ public class Game extends java.util.Timer {
         ui.setState(field);
         return field;
     }
-    public static int[][] moveLeft(int[][] field , int[][] piece  ) {
+    public static int[][] moveLeft(int[][] field  ) {
         if(isGameOver){return field;}
         remove(field , piece );
         if (currentX  >= 1 && isValidPutPiece(field , piece, currentX -1, currentY ) ) {
@@ -206,8 +229,8 @@ public class Game extends java.util.Timer {
         remove(field , piece );
         int[][] prevMut = piece;
         int caseNumber;
-        if ( currentMutation == 3){ 
-            currentMutation = 0; 
+        if ( currentMutation == 3){
+            currentMutation = 0;
         } else currentMutation++;
         int[][] nextMut = rotateArrayCW(currentMutation);
         if (pieceID == 1){
@@ -217,45 +240,45 @@ public class Game extends java.util.Timer {
             }   else if (currentMutation == 0 || currentMutation == 2){
                 if (currentX >=8) currentX = 7;
                 caseNumber = 2;
-            	return rotationPlacer(nextMut, prevMut, caseNumber);
+                return rotationPlacer(nextMut, prevMut, caseNumber);
             }
 
         } if (pieceID == 7 || pieceID == 8 || pieceID == 10){
             if (currentMutation == 0){
                 if (currentX >=8) currentX = 6;
-                caseNumber = 3; 
+                caseNumber = 3;
                 return rotationPlacer(nextMut, prevMut, caseNumber);
             }   else if (currentMutation == 1){
                 caseNumber = 4;
-            	return rotationPlacer(nextMut, prevMut, caseNumber);
+                return rotationPlacer(nextMut, prevMut, caseNumber);
             }   else if (currentMutation == 2){
                 caseNumber = 5;
-            	return rotationPlacer(nextMut, prevMut, caseNumber);
+                return rotationPlacer(nextMut, prevMut, caseNumber);
             }   else if (currentMutation == 3){
-                caseNumber = 6; 
-            	return rotationPlacer(nextMut, prevMut, caseNumber);
-            } 
+                caseNumber = 6;
+                return rotationPlacer(nextMut, prevMut, caseNumber);
+            }
         } if (pieceID == 4 || pieceID == 9){
             if (currentMutation == 0){
                 if (currentX == 8) currentX = 7;
-                caseNumber = 7; 
+                caseNumber = 7;
                 return rotationPlacer(nextMut, prevMut, caseNumber);
             }   else if (currentMutation == 1){
                 caseNumber = 8;
-            	return rotationPlacer(nextMut, prevMut, caseNumber);
+                return rotationPlacer(nextMut, prevMut, caseNumber);
             }   else if (currentMutation == 2){
                 caseNumber = 9;
-            	return rotationPlacer(nextMut, prevMut, caseNumber);
+                return rotationPlacer(nextMut, prevMut, caseNumber);
             }   else if (currentMutation == 3){
                 caseNumber = 0;
-            	return rotationPlacer(nextMut, prevMut, caseNumber);
-            } 
+                return rotationPlacer(nextMut, prevMut, caseNumber);
+            }
 
         } {
-        caseNumber = 0;
-        return rotationPlacer(nextMut, prevMut, caseNumber);
+            caseNumber = 0;
+            return rotationPlacer(nextMut, prevMut, caseNumber);
         }
-        }
+    }
 
     public static int[][] rotationPlacer (int[][] nextMut, int[][] prevMut, int caseNumber){
         if (caseNumber == 1){
@@ -269,64 +292,64 @@ public class Game extends java.util.Timer {
             currentY+= 1;
         } if (caseNumber == 4){
             currentX+= 1;
-            currentY-= 2; 
+            currentY-= 2;
         } if (caseNumber == 5){
             currentX-= 2;
-            currentY+= 1; 
+            currentY+= 1;
         } if (caseNumber == 6){
             currentX+= 1;
-            currentY-= 0; 
+            currentY-= 0;
         } if (caseNumber == 7){
             currentX+= 0;
             currentY+= 1;
         } if (caseNumber == 8){
             currentX+= 1;
-            currentY-= 1; 
+            currentY-= 1;
         } if (caseNumber == 9){
             currentX-= 1;
-            currentY+= 0; 
-        }   
-        
+            currentY+= 0;
+        }
+
         if (currentX<0) currentX = 0;
         if (currentY<0) currentY = 0;
         if (isValidPutPiece(field , nextMut , currentX , currentY ) ) {
             piece = nextMut;
             addPiece(field,piece,currentX , currentY );
-            } else {
-                if (caseNumber == 1){
-                    currentX-= 2;
-                    currentY+= 2;
-                } if (caseNumber == 2){
-                    currentX+= 2;
-                    currentY-= 2;
-                } if (caseNumber == 3){
-                    currentX-= 0;
-                    currentY-= 1;
-                } if (caseNumber == 4){
-                    currentX+= 1;
-                    currentY+= 2; 
-                } if (caseNumber == 5){
-                    currentX+= 2;
-                    currentY-= 1; 
-                } if (caseNumber == 6){
-                    currentX-= 1;
-                    currentY+= 0; 
-                } if (caseNumber == 7){
-                    currentX-= 0;
-                    currentY-= 1;
-                } if (caseNumber == 8){
-                    currentX-= 1;
-                    currentY+= 1; 
-                } if (caseNumber == 9){
-                    currentX+= 1;
-                    currentY-= 0; 
-                }
-                addPiece(field, prevMut, currentX, currentY);
-                currentMutation--;
+        } else {
+            if (caseNumber == 1){
+                currentX-= 2;
+                currentY+= 2;
+            } if (caseNumber == 2){
+                currentX+= 2;
+                currentY-= 2;
+            } if (caseNumber == 3){
+                currentX-= 0;
+                currentY-= 1;
+            } if (caseNumber == 4){
+                currentX+= 1;
+                currentY+= 2;
+            } if (caseNumber == 5){
+                currentX+= 2;
+                currentY-= 1;
+            } if (caseNumber == 6){
+                currentX-= 1;
+                currentY+= 0;
+            } if (caseNumber == 7){
+                currentX-= 0;
+                currentY-= 1;
+            } if (caseNumber == 8){
+                currentX-= 1;
+                currentY+= 1;
+            } if (caseNumber == 9){
+                currentX+= 1;
+                currentY-= 0;
             }
-            ui.setState(field);
-            return field;
-    }    
+            addPiece(field, prevMut, currentX, currentY);
+            currentMutation--;
+        }
+        ui.setState(field);
+        return field;
+    }
 
     static int[][] deleteTheLines(){
 
@@ -374,7 +397,7 @@ public class Game extends java.util.Timer {
     static int[][] rotateArrayCW(int currentMutation) {
         int[][] pieceToPlace =PentominoDatabase.data[pieceID][currentMutation];
         return pieceToPlace;
-    }    
+    }
 
     public static void main(String[] args) throws InterruptedException {
         JFrame f = UI.window;
