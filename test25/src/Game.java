@@ -229,13 +229,13 @@ public class Game extends java.util.Timer {
     }
     public static int[][] rotation(int[][] field){
         if(isGameOver){return field;}
-        remove(field , piece );
         int[][] prevMut = piece;
         int caseNumber;
         if ( currentMutation == 3){
             currentMutation = 0;
         } else currentMutation++;
         int[][] nextMut = nextMutation(currentMutation);
+//        remove(field , piece );
         if (pieceID == 1){
             if (currentMutation == 1 || currentMutation == 3){
                 caseNumber = 1;
@@ -283,6 +283,7 @@ public class Game extends java.util.Timer {
         }
     }
     public static int[][] rotationPlacer (int[][] nextMut, int[][] prevMut, int caseNumber){
+        remove(field , piece );
         if (caseNumber == 1){
             currentX+= 2;
             currentY-= 2;
@@ -379,18 +380,15 @@ public class Game extends java.util.Timer {
             for(int i = 0 ; i < HEIGHT ; i++){
                 for(int j = 0 ; j < WIDTH ; j++){
                     if(field[i][j] == -10){
-                            while(i>=0){
-                                if(i >1) {
+                            while(i>0 && numberOfComLines>0){
+                                if(i >=1) {
                                     System.out.println("woo");
                                     field[i] = emptyRow;
                                     field[i] = field[i - 1];
+                                    i--;
                                 }
-                                if(i==0){
-                                    field[i] =  emptyRow;
-                                    break;
-                                }
-                                i--;
                             }
+
                             field[i] = emptyRow;
                             numberOfComLines--;
                         }
