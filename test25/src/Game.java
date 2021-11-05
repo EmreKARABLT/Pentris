@@ -64,8 +64,8 @@ public class Game extends java.util.Timer {
             if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                 try {
                     if(!isDropped){
-                    instantDrop(field);
-                    isDropped = true ;
+                        instantDrop(field);
+                        isDropped = true ;
                     }
                 } catch (InterruptedException ex) {
                     System.out.println(ex);
@@ -380,20 +380,20 @@ public class Game extends java.util.Timer {
             for(int i = 0 ; i < HEIGHT ; i++){
                 for(int j = 0 ; j < WIDTH ; j++){
                     if(field[i][j] == -10){
-                            while(i>0 && numberOfComLines>0){
-                                if(i >=1) {
-                                    System.out.println("woo");
-                                    field[i] = emptyRow;
-                                    field[i] = field[i - 1];
-                                    i--;
-                                }
+                        while(i>0 && numberOfComLines>0){
+                            if(i >=1) {
+                                System.out.println("woo");
+                                field[i] = emptyRow;
+                                field[i] = field[i - 1];
+                                i--;
                             }
-
-                            field[i] = emptyRow;
-                            numberOfComLines--;
                         }
+
+                        field[i] = emptyRow;
+                        numberOfComLines--;
                     }
                 }
+            }
         ui.setState(field);
         return field;
     }
