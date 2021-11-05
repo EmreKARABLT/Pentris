@@ -238,14 +238,14 @@ public class Game extends java.util.Timer {
                 caseNumber = 1;
                 return rotationPlacer(nextMut, prevMut, caseNumber);
             }   else if (currentMutation == 0 || currentMutation == 2){
-                if (currentX >=8) currentX = 7;
+                if (currentX >=WIDTH-2) currentX = WIDTH-3;
                 caseNumber = 2;
                 return rotationPlacer(nextMut, prevMut, caseNumber);
             }
 
         } if (pieceID == 7 || pieceID == 8 || pieceID == 10){
             if (currentMutation == 0){
-                if (currentX >=8) currentX = 6;
+                if (currentX >=WIDTH-2) currentX = WIDTH-4;
                 caseNumber = 3;
                 return rotationPlacer(nextMut, prevMut, caseNumber);
             }   else if (currentMutation == 1){
@@ -260,7 +260,7 @@ public class Game extends java.util.Timer {
             }
         } if (pieceID == 4 || pieceID == 9){
             if (currentMutation == 0){
-                if (currentX == 8) currentX = 7;
+                if (currentX == WIDTH-2) currentX = WIDTH-3;
                 caseNumber = 7;
                 return rotationPlacer(nextMut, prevMut, caseNumber);
             }   else if (currentMutation == 1){
