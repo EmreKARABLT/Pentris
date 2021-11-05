@@ -8,7 +8,7 @@ import java.util.Random;
 import java.awt.event.KeyEvent;
 
 public class Game extends java.util.Timer {
-    public static final int HEIGHT = 25;
+    public static final int HEIGHT = 15;
     public static final int WIDTH = 5;
     public static boolean isGameOver = false;
     static int tick = 1000;
