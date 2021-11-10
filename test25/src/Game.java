@@ -8,7 +8,7 @@ import java.util.Random;
 import java.awt.event.KeyEvent;
 
 public class Game extends java.util.Timer {
-    public static final int HEIGHT = 15;
+    public static final int HEIGHT = 12;
     public static final int WIDTH = 7;
     public static boolean isGameOver = false;
     public static final int lineDeletionMax = 3;
@@ -19,7 +19,7 @@ public class Game extends java.util.Timer {
     static int fScore = 0;
     static int tScore = 0;
     public static int pieceID;
-    public static UI ui = new UI(WIDTH , HEIGHT , 25);
+    public static UI ui = new UI(WIDTH , HEIGHT , 50);
     public static int currentX = 0 ;
     public static int currentY = 0 ;
     public static int currentMutation = 0 ;
@@ -131,10 +131,10 @@ public class Game extends java.util.Timer {
     }
     public static int[][] placeTopPiece() {
         // I will take what was produced from the piecePicker method
-        heightFitness();
-        bumpFitness();
-        fullFitness();
-        totalFitness();
+        GA.heightFitness();
+        GA.bumpFitness();
+        GA.fullFitness();
+        GA.totalFitness();
         piece = piecePicker(true);
         currentX = (WIDTH  - piece[0].length - 1 ) / 2  ;
         currentY = 0;
@@ -405,62 +405,7 @@ public class Game extends java.util.Timer {
         int[][] pieceToPlace =PentominoDatabase.data[pieceID][currentMutation];
         return pieceToPlace;
     }
-    public static void heightFitness(){
-        hScore = HEIGHT;
-        outer:
-        for(int i = 0 ; i < HEIGHT ; i++){
-            for (int j = 0; j < WIDTH; j++) {
-                if (field[i][j] != -1) {
-                    hScore = i;
-                    break outer;
-                }
-            }
-        }
-        //System.out.println("Height score = " + hScore);
-    }
-    public static void bumpFitness(){
-        bScore = 0;
-        
-        ArrayList<Integer> heightPerColomb = new ArrayList<Integer>(WIDTH);
-        for(int i = 0 ; i < WIDTH ; i++){
-            boolean emptyColomb = true;
-            for (int j = 0; j < HEIGHT; j++) {
-                if (field[j][i] != -1) {
-                    heightPerColomb.add(j);
-                    emptyColomb = false;
-                    break;
-                }
-            }
-            if (emptyColomb == true) {
-                heightPerColomb.add(HEIGHT);
-            }
-        }
 
-        for (int i = 1; i < heightPerColomb.size(); i++){
-            bScore -= Math.abs(heightPerColomb.get(i-1) - heightPerColomb.get(i));
-           
-        }
-        //System.out.println("Bumpiness score = " + bScore);                
-    }
-    public static void fullFitness(){
-        fScore = 0;
-        for(int i = 0 ; i < WIDTH ; i++){
-            boolean firstPiece = false;
-            for (int j = 0; j < HEIGHT; j++) {
-                if (field[j][i] != -1) {
-                    firstPiece = true;
-                }
-                if (firstPiece && field[j][i] == -1){
-                    fScore--;
-                }
-            }
-        }  
-        //System.out.println("Hole score = " + fScore);   
-    }
-    public static void totalFitness(){
-        tScore = score + hScore + bScore + fScore;
-        System.out.println("Total score = " + tScore);
-    }
     public static void main(String[] args) throws InterruptedException {
         JFrame f = UI.window;
         Game g = new Game();
