@@ -11,6 +11,7 @@ public class Game extends java.util.Timer {
     public static final int HEIGHT = 15;
     public static final int WIDTH = 7;
     public static boolean isGameOver = false;
+    public static final int lineDeletionMax = 3;
     static int tick = 1000;
     static int score = 0;
     static int hScore = 0;
@@ -112,7 +113,10 @@ public class Game extends java.util.Timer {
         return field;
     }
     public static int[][] piecePicker(boolean firstcall) {
+      
+        for(int i = 0; i<lineDeletionMax; i++){
         deleteTheLines();
+       }
 
         if (pieces.size()<1){
             for (int i = 0; i<12; i++) pieces.add(i);
@@ -120,6 +124,7 @@ public class Game extends java.util.Timer {
         Random ran = new Random();
         int randomInt = ran.nextInt(pieces.size());
         pieceID = pieces.get(randomInt);
+        //pieceID = 1;
         if (firstcall) pieces.remove(randomInt);
         currentMutation = 0 ;
         return PentominoDatabase.data[pieceID][currentMutation];
@@ -462,7 +467,7 @@ public class Game extends java.util.Timer {
         ////// MUSIC ///////
         String Music = "Pentris.wav";
         Korobeiniki pentrisMusic = new Korobeiniki();
-        pentrisMusic.pentrisMusic(Music);
+       // pentrisMusic.pentrisMusic(Music);
         ///////////////////
         f.addKeyListener(keys);
         t =new Timer(tick , al);
