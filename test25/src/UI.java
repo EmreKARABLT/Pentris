@@ -6,6 +6,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 /**
  * This class takes care of all the graphics to display a certain state.
@@ -17,6 +19,18 @@ public class UI extends JPanel
     public static JFrame window;
     public int[][] state;
     public int size;
+    private JLabel scoreHead = new JLabel("Your score", SwingConstants.CENTER);
+    private JLabel score = new JLabel("0",SwingConstants.CENTER);
+
+    private JLabel pieceHead = new JLabel("Next piece", SwingConstants.CENTER);
+    private ImageIcon image = new ImageIcon(getClass().getResource("9.png"));
+    private JLabel piece = new JLabel();
+
+    private JLabel rulesHead = new JLabel("HOW TO PLAY", SwingConstants.CENTER);
+    private JLabel rules = new JLabel();
+
+    private JButton quit = new JButton("QUIT");
+
 
     /**
      * Constructor for the GUI. Sets everything up
@@ -26,19 +40,52 @@ public class UI extends JPanel
      */
     public UI(int x, int y, int _size)
     {
-      
 
-        size = _size;
-        setPreferredSize(new Dimension(x * size + 200, y * size + 10));
 
- 
+        size = _size*1;
+        //setPreferredSize(new Dimension(x * size +300, y * size));
+
+
         window = new JFrame("SIGMAtetris");;
+        window.setSize(500,779);
+        //window.setSize(x * size +300, y * size);
         window.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/SigmaGames.png")));
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setResizable(false);
+        setLayout(null);
+
+        window.setResizable(true);
         window.add(this);
-        window.pack();
-     
+        //window.pack();
+
+        scoreHead.setBounds(250, 100, 250, 20);
+        scoreHead.setOpaque(true);
+        add(scoreHead);
+        score.setBounds(250,140,250,20);
+        score.setOpaque(true);
+        add(score);
+
+        pieceHead.setBounds(250, 200, 250, 20);
+        pieceHead.setOpaque(true);
+        add(pieceHead);
+
+        piece.setBounds(275,250,200,200);
+        piece.setIcon(image);
+        add(piece);
+
+        rulesHead.setBounds(300,470,150,40);
+        add(rulesHead);
+        rules.setText("<html> Z - rotate <br><br> → - move right <br><br> ← - move left <br><br> space bar - drop piece <html>");
+        rules.setOpaque(true);
+        rules.setBackground(new Color (219, 217, 217));
+
+        rules.setBounds(300,500,150,130);
+        add(rules);
+        quit.setBounds(325,700,100,30);
+        quit.setFocusable(false);
+        add(quit);
+
+
+
         window.setVisible(true);
 
         state = new int[y][x];
@@ -58,12 +105,11 @@ public class UI extends JPanel
     {
         Graphics2D localGraphics2D = (Graphics2D) g;
 
-        localGraphics2D.setColor(Color.MAGENTA);
+        localGraphics2D.setColor(new Color (145, 145, 145));
         localGraphics2D.fill(getVisibleRect());
-        localGraphics2D.setStroke(new BasicStroke(20.0F));
 
         //draw lines
-        localGraphics2D.setColor(Color.GRAY);
+        localGraphics2D.setColor(new Color(192, 192, 192));
         for (int i = 0; i <= state[0].length; i++)
         {
             localGraphics2D.drawLine(i * size, 0, i * size, state.length * size);
@@ -92,19 +138,19 @@ public class UI extends JPanel
      */
     private Color GetColorOfID(int i)
     {
-        if(i==0) {return Color.BLUE;}
-        else if(i==1) {return Color.ORANGE;}
-        else if(i==2) {return Color.CYAN;}
-        else if(i==3) {return Color.GREEN;}
-        else if(i==4) {return Color.MAGENTA;}
-        else if(i==5) {return Color.PINK;}
-        else if(i==6) {return Color.RED;}
-        else if(i==7) {return Color.YELLOW;}
-        else if(i==8) {return new Color(0, 0, 0);}
-        else if(i==9) {return new Color(0, 0, 100);}
-        else if(i==10) {return new Color(100, 0,0);}
-        else if(i==11) {return new Color(0, 100, 0);}
-        else {return Color.LIGHT_GRAY;}
+        if(i==0) {return (new Color (151, 209, 169));}
+        else if(i==1) {return (new Color (247, 228, 154));}
+        else if(i==2) {return (new Color (254, 206, 121));}
+        else if(i==3) {return (new Color (248, 166, 86));}
+        else if(i==4) {return (new Color (244, 129, 112));}
+        else if(i==5) {return (new Color(243, 129, 147));}
+        else if(i==6) {return (new Color (243, 145, 188)) ;}
+        else if(i==7) {return (new Color (228, 183, 213));}
+        else if(i==8) {return (new Color(139, 139, 195));}
+        else if(i==9) {return (new Color(148, 202, 227));}
+        else if(i==10) {return (new Color(160, 217, 217));}
+        else if(i==11) {return (new Color(202, 224, 137));}
+        else {return new Color (224, 224, 224);}
     }
 
     /**
@@ -113,12 +159,17 @@ public class UI extends JPanel
      */
     public void setState(int[][] _state)
     {
+        int currScore = Game.score;
+        score.setText(String.valueOf(currScore));
+
+
+
         for (int i = 0; i < state.length; i++)
         {
             for (int j = 0; j < state[i].length; j++)
             {
                 state[i][j] = _state[i][j];
-                
+
 
             }
 

@@ -8,8 +8,8 @@ import java.util.Random;
 import java.awt.event.KeyEvent;
 
 public class Game extends java.util.Timer {
-    public static final int HEIGHT = 12;
-    public static final int WIDTH = 7;
+    public static final int HEIGHT = 15;
+    public static final int WIDTH = 5;
     public static boolean isGameOver = false;
     public static final int lineDeletionMax = 3;
     static int tick = 1000;
@@ -19,7 +19,7 @@ public class Game extends java.util.Timer {
     static int fScore = 0;
     static int tScore = 0;
     public static int pieceID;
-    public static UI ui = new UI(WIDTH , HEIGHT , 50);
+    public static UI ui = new UI(WIDTH , HEIGHT ,50 );
     public static int currentX = 0 ;
     public static int currentY = 0 ;
     public static int currentMutation = 0 ;
