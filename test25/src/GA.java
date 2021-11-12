@@ -1,6 +1,21 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GA {
+    private double height_weight ;
+    private double bumpiness_weight ;
+    private double holes_weight ;
+    private double score_weight ;
+    private double score ;
+    private Random random ;
+    public GA(Game tetris){
+        score = 0 ;
+        this.height_weight = random.nextDouble();
+        this.bumpiness_weight = random.nextDouble();
+        this.holes_weight = random.nextDouble();
+        this.score_weight = random.nextDouble();
+
+    }
     public static void heightFitness(){
         Game.hScore = Game.HEIGHT;
         outer:
@@ -38,7 +53,7 @@ public class GA {
         }
         //System.out.println("Bumpiness score = " + bScore);
     }
-    public static void fullFitness(){
+    public static void holes(){
         Game.fScore = 0;
         for(int i = 0 ; i < Game.WIDTH ; i++){
             boolean firstPiece = false;
@@ -53,6 +68,7 @@ public class GA {
         }
         //System.out.println("Hole score = " + fScore);
     }
+
     public static void totalFitness(){
         Game.tScore = Game.score + Game.hScore + Game.bScore + Game.fScore;
         System.out.println("Total score = " + Game.tScore);
