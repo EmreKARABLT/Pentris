@@ -18,6 +18,8 @@ public class Game extends java.util.Timer {
     static int bScore = 0;
     static int fScore = 0;
     static int tScore = 0;
+    static int scoreForMove;
+
     public static int pieceID;
     public static UI ui = new UI(WIDTH , HEIGHT ,50 );
     public static int currentX = 0 ;
@@ -38,6 +40,7 @@ public class Game extends java.util.Timer {
             if(isGameOver){
                 t.stop();
             }
+
             try {
                 moveBottom(field);
             } catch (InterruptedException ex) {
@@ -112,33 +115,33 @@ public class Game extends java.util.Timer {
         }
         return field;
     }
-    public static int[][] piecePicker(boolean firstcall) {
-      
-        for(int i = 0; i<lineDeletionMax; i++){
-        deleteTheLines();
-       }
-
+    public static int[][] piecePicker(boolean firstcall) throws InterruptedException {
         if (pieces.size()<1){
             for (int i = 0; i<12; i++) pieces.add(i);
         }
         Random ran = new Random();
         int randomInt = ran.nextInt(pieces.size());
-        pieceID = pieces.get(randomInt);
-        //pieceID = 1;
+//        pieceID = pieces.get(randomInt);
+        pieceID = 1;
         if (firstcall) pieces.remove(randomInt);
         currentMutation = 0 ;
         return PentominoDatabase.data[pieceID][currentMutation];
     }
-    public static int[][] placeTopPiece() {
+    public static int[][] placeTopPiece() throws InterruptedException {
         // I will take what was produced from the piecePicker method
         GA.heightFitness();
         GA.bumpFitness();
-        GA.fullFitness();
+        GA.holes();
         GA.totalFitness();
         piece = piecePicker(true);
         currentX = (WIDTH  - piece[0].length - 1 ) / 2  ;
         currentY = 0;
+        scoreForMove = scoreForMove();
+        for (int i = 0; i < scoreForMove; i++) {
+            deleteLine();
 
+        }
+        ui.setState(field);
         if(!isGameOver && isValidPutPiece(field, piece, currentX, currentY)){
             addPiece(field, piece, currentX, currentY);
         }else {
@@ -353,9 +356,8 @@ public class Game extends java.util.Timer {
 //        ui.setState(field);
         return field;
     }
-    static int[][] deleteTheLines(){
-
-        int numberOfComLines = 0 ;
+    public static int scoreForMove(){
+        scoreForMove = 0 ;
         for(int i = 0 ; i < HEIGHT ; i++){
             boolean isFilled = true;
             for (int j = 0; j < WIDTH; j++) {
@@ -366,42 +368,56 @@ public class Game extends java.util.Timer {
 
             }
             if( isFilled ){
-                numberOfComLines++;
-                score++;
-                System.out.printf("Your score = %d \n" ,score );
+                scoreForMove++;
                 for(int l = 0 ; l < field[0].length ; l++){
                     field[i][l] = -10;
                 }
             }
         }
+        score+= scoreForMove;
+        return scoreForMove;
+    }
+    public static void deleteLine(){
+
+
         int[] emptyRow = new int[WIDTH];
         Arrays.fill(emptyRow ,  -1 );
-
-        outer:
-        while(numberOfComLines > 0 )
-            for(int i = 0 ; i < HEIGHT ; i++){
-                for(int j = 0 ; j < WIDTH ; j++){
-                    if(field[i][j] == -10){
-                        while(i>0){
-                            if(i >=0) {
-                                field[i] = emptyRow;
-                                field[i] = field[i - 1];
-                                i--;
-                            }
-                        }
-
-                        field[i] = emptyRow;
-                        numberOfComLines--;
-                        if(numberOfComLines == 0 || i == 0 ){
-                            break outer;
-                        }
+        
+            outer:
+            for(int i = HEIGHT - 1 ; i >=1 ; i-- ){
+                if(field[i][0] == -10 ){
+                    for(int x = i ; x > 0 ; x--){
+                        field[x] = field[x - 1];
                     }
+                    field[0] = emptyRow;
+                    break outer;
                 }
             }
-        ui.setState(field);
-        return field;
+            ui.setState(field);
+
+
+//        outer:
+//        while(numberOfCompletedLines > 0 )
+//            for(int i = 0 ; i < HEIGHT ; i++){
+//                if(field[i][0] == -10){
+//                    score++;
+//                    System.out.printf("Your score = %d \n" ,score );
+//                    while(i>0) {
+//                        field[i] = emptyRow;
+//                        field[i] = field[i - 1];
+//                        i--;
+//                    }
+//                    field[i] = emptyRow;
+//                    numberOfCompletedLines--;
+//                    if(numberOfCompletedLines == 0 || i == 0 ){
+//                        break outer;
+//                    }
+//                }
+//            }
+//
+//        ui.setState(field);
     }
-    static int[][] nextMutation(int currentMutation) {
+    public static int[][] nextMutation(int currentMutation) {
         int[][] pieceToPlace =PentominoDatabase.data[pieceID][currentMutation];
         return pieceToPlace;
     }
