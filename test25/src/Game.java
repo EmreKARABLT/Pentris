@@ -8,19 +8,20 @@ import java.util.Random;
 import java.awt.event.KeyEvent;
 
 public class Game extends java.util.Timer {
-    public static final int HEIGHT = 15;
+    public static final int HEIGHT = 12;
     public static final int WIDTH = 5;
     public static boolean isGameOver = false;
     public static final int lineDeletionMax = 3;
     public static int tick = 1000;
     public static int score = 0;
+    public static int counter = 0 ;
 //    static int hScore = 0;
 //    static int bScore = 0;
 //    static int fScore = 0;
 //    static int tScore = 0;
     static int scoreForMove;
     public static int pieceID;
-    public static UI ui = new UI(WIDTH , HEIGHT ,50 );
+    public static UI ui = new UI(WIDTH , HEIGHT ,500/HEIGHT);
     public static int currentX = 0 ;
     public static int currentY = 0 ;
     public static int currentMutation = 0 ;
@@ -33,14 +34,15 @@ public class Game extends java.util.Timer {
     public static ArrayList<Integer> pieces = new ArrayList<Integer>(12);
     public static boolean isBot = true ;
     public static ActionListener al = new ActionListener() {
-        public static int counter = 0;
         @Override
         public void actionPerformed(ActionEvent e) {
             if(isGameOver){
                 t.stop();
             }
-            moveBottom(field);
-            ui.setState(field);
+            if(isBot){
+                placeTopPiece();
+            }else
+                moveBottom(field);
         }
     };
     static Timer t ;
@@ -114,12 +116,14 @@ public class Game extends java.util.Timer {
         if (pieces.size()<1){
             for (int i = 0; i<12; i++) pieces.add(i);
         }
-        Random ran = new Random();
-        int randomInt = ran.nextInt(pieces.size());
+//        Random ran = new Random();
+//        int randomInt = ran.nextInt(pieces.size());
 //        pieceID = pieces.get(randomInt);
-        pieceID = 0;
-        if (firstcall) pieces.remove(randomInt);
-        currentMutation = 0 ;
+////        pieceID = 2;
+//        if (firstcall) pieces.remove(randomInt);
+//        currentMutation = 0 ;
+        counter++;
+        pieceID = counter % 12  ;
         return PentominoDatabase.data[pieceID][currentMutation];
     }
     public static int[][] placeTopPiece(){
@@ -134,15 +138,17 @@ public class Game extends java.util.Timer {
         scoreForMove = scoreForMove();
         for (int i = 0; i < scoreForMove; i++) {
             deleteLine();
+            score++;
 
         }
+        System.out.println("score : " + score);
         ui.setState(field);
         if(!isGameOver && isValidPutPiece(field, piece, currentX, currentY)){
             if(isBot){
-                currentX = 0 ;
                 Bot.pickBestMove();
+            }else {
+                addPiece(field , piece , currentX , currentY );
             }
-            addPiece(field, piece, currentX, currentY);
         }else {
             System.out.println("GAME OVER");
             isGameOver = true; // Game over, buddy
@@ -178,19 +184,18 @@ public class Game extends java.util.Timer {
         ui.setState(grid);
         return grid;
     }
-    public static int[][] remove(int[][] grid, int[][] piece ) {
+    public static int[][] remove(int[][] grid, int[][] piece , int x , int y ) {
         for(int i = 0; i < piece.length; i++){
             for (int j = 0; j < piece[0].length; j++){
-                if(i + currentY < HEIGHT && j + currentX  < WIDTH && grid[i + currentY][j + currentX] == pieceID && piece[i][j] ==  1)
-                    grid[i + currentY ][j + currentX] = -1;
+                if(i + y < HEIGHT && j + x  < WIDTH && grid[i + y][j + x] == pieceID && piece[i][j] ==  1)
+                    grid[i + y ][j + x] = -1;
             }
         }
         return grid;
     }
     public static int[][] moveBottom(int[][] field   ) {
         if(isGameOver){return field;}
-        isRotated = true ;
-        remove(field , piece );
+        remove(field , piece  , currentX , currentY);
         if (currentY + piece.length < field.length && isValidPutPiece(field, piece, currentX, currentY + 1 ) ) {
             addPiece(field, piece, currentX , currentY + 1);
             currentY++;
@@ -200,13 +205,12 @@ public class Game extends java.util.Timer {
             placeTopPiece();
         }
         ui.setState(field);
-        isRotated = false;
         return field;
     }
     public static int[][] instantDrop(){
         if(isGameOver){return field;}
         while(currentY < HEIGHT) {
-            remove(field, piece);
+            remove(field, piece , currentX , currentY);
             if (isValidPutPiece(field, piece, currentX, currentY+1) ) {
                 addPiece(field, piece, currentX, currentY + 1);
                 currentY++;
@@ -221,22 +225,24 @@ public class Game extends java.util.Timer {
         ui.setState(field);
         return field;
     }
-    public static int[][] instantDropBot( int[][] grid){
+    public static int[][] instantDropBot( int[][] grid , int[][] piece, int x , int y ){
         if(isGameOver){return grid;}
-        while(currentY < HEIGHT) {
-            remove(grid, piece);
-            if (isValidPutPiece(grid, piece, currentX, currentY+1) ) {
-                addPiece(grid, piece, currentX, currentY + 1);
-                currentY++;
+        while(y < HEIGHT) {
+            remove(grid, piece , x , y );
+            if (isValidPutPiece(grid, piece , x, y+1) ) {
+                addPiece(grid, piece, x, y+ 1);
+                y++;
+//                System.out.println("=============ADDED TO   " + x + "   " + y);
             }else{
                 break;
             }
         }
-        return addPiece(grid , piece , currentX , currentY);
+//        System.out.println("=============BOT DROPPED IT TO  " + x + "  " + y);
+        return addPiece(grid , piece , x , y);
     }
     public static int[][] moveRight(int[][] field , int[][] piece  ) {
         if(isGameOver){return field;}
-        remove(field , piece );
+        remove(field , piece , currentX , currentY );
         if (currentX + piece[0].length + 1 <= field[0].length && isValidPutPiece(field, piece, currentX +1, currentY ) ) {
             addPiece(field, piece, currentX + 1 , currentY );
             currentX++;
@@ -249,7 +255,7 @@ public class Game extends java.util.Timer {
     }
     public static int[][] moveLeft(int[][] field  ) {
         if(isGameOver){return field;}
-        remove(field , piece );
+        remove(field , piece , currentX , currentY);
         if (currentX  >= 1 && isValidPutPiece(field , piece, currentX -1, currentY ) ) {
             addPiece(field, piece, currentX - 1 , currentY );
             currentX--;
@@ -262,7 +268,7 @@ public class Game extends java.util.Timer {
     }
     public static int[][] rotation(int[][] field){
         if(isGameOver){return field;}
-        remove(field , piece );
+        remove(field , piece , currentX ,currentY);
         int caseNumber;
 
         prevMut = piece;

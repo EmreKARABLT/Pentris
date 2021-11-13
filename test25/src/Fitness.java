@@ -1,10 +1,6 @@
 import java.util.ArrayList;
 
 public class Fitness{
-    private static double height_weight = 0.78075 ;
-    private static double bumpiness_weight = 0.3925;
-    private static double holes_weight = 0.82075;
-    private static double lineCleared_weight =  0.55;
     private static double score ;
     static double heightScore = 0;
     static double bumpinessScore = 0;
@@ -21,7 +17,7 @@ public class Fitness{
 //
 //    }
     public static double heightFitness(int[][] grid){
-        heightScore = Game.HEIGHT;
+        double heightScore = Game.HEIGHT;
         outer:
         for(int i = 0 ; i < Game.HEIGHT ; i++){
             for (int j = 0; j < Game.WIDTH; j++) {
@@ -31,11 +27,11 @@ public class Fitness{
                 }
             }
         }
-        System.out.println("Height score = " + heightScore);
+//        System.out.println("Height score = " + heightScore);
         return heightScore;
     }
     public static double bumpFitness(int[][] grid){
-        bumpinessScore = 0;
+        double bumpinessScore = 0;
 
         ArrayList<Integer> heightPerColomb = new ArrayList<Integer>(Game.WIDTH);
         for(int i = 0 ; i < Game.WIDTH ; i++){
@@ -56,11 +52,11 @@ public class Fitness{
             bumpinessScore -= Math.abs(heightPerColomb.get(i-1) - heightPerColomb.get(i));
 
         }
-        System.out.println("Bumpiness score = " + bumpinessScore);
+//        System.out.println("Bumpiness score = " + bumpinessScore);
         return bumpinessScore;
     }
     public static double holes(int[][] grid){
-        holeScore = 0;
+        double holeScore = 0;
         for(int i = 0 ; i < Game.WIDTH ; i++){
             boolean firstPiece = false;
             for (int j = 0; j < Game.HEIGHT; j++) {
@@ -72,18 +68,22 @@ public class Fitness{
                 }
             }
         }
-        System.out.println("Hole score = " + holeScore);
+//        System.out.println("Hole score = " + holeScore);
         return holeScore;
     }
 
     public static double calculateFitness(int[][] grid ){
 
-        fitnessValue = Game.scoreForMove * lineCleared_weight +
-                        heightFitness(grid) * height_weight +
-                        bumpFitness(grid) * bumpiness_weight +
-                        holes(grid) * holes_weight;
+        double lineCleared_weight = 3.55;
+        double height_weight = 2.715;
+        double bumpiness_weight = 0.925;
+        double holes_weight = 0.82075;
+        double fitnessValue = (double)Game.scoreForMove * lineCleared_weight +
+                (heightFitness(grid) * height_weight) +
+                (bumpFitness(grid) * bumpiness_weight) +
+                (holes(grid) * holes_weight);
 
-        System.out.println("Total score = " + fitnessValue);
+//        System.out.println("Fitness value = " + fitnessValue);
         return fitnessValue;
     }
 }
