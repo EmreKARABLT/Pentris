@@ -21,7 +21,7 @@ public class Game extends java.util.Timer {
 //    static int tScore = 0;
     static int scoreForMove;
     public static int pieceID;
-    public static UI ui = new UI(WIDTH , HEIGHT ,500/HEIGHT);
+    public static UI ui = new UI(WIDTH , HEIGHT ,40);
     public static int currentX = 0 ;
     public static int currentY = 0 ;
     public static int currentMutation = 0 ;
@@ -113,7 +113,7 @@ public class Game extends java.util.Timer {
         return field;
     }
     public static int[][] piecePicker(boolean firstcall)  {
-        if (pieces.size()<1){
+        if (pieces.size()>1){
             for (int i = 0; i<12; i++) pieces.add(i);
         }
 //        Random ran = new Random();
