@@ -7,7 +7,13 @@ public class Fitness{
     static double holeScore = 0;
     static double fitnessValue = 0;
 
-//
+    static double lineCleared_weight = 3.55;
+    static double height_weight = 2.715;
+    static double bumpiness_weight = 0.925;
+    static double holes_weight = 0.82075;
+
+
+    //
 //    public Fitness(){
 //        this.score = 0 ;
 //        this.height_weight = 0.78075;
@@ -74,10 +80,6 @@ public class Fitness{
 
     public static double calculateFitness(int[][] grid ){
 
-        double lineCleared_weight = 3.55;
-        double height_weight = 2.715;
-        double bumpiness_weight = 0.925;
-        double holes_weight = 0.82075;
         double fitnessValue = (double)Game.scoreForMove * lineCleared_weight +
                 (heightFitness(grid) * height_weight) +
                 (bumpFitness(grid) * bumpiness_weight) +

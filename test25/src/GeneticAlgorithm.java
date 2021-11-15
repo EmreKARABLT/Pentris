@@ -38,8 +38,8 @@ public void createGeneration () {
 // 1) Delete 50% of population (Tournament selection we know from CCN)> Pair up 0th with 1st, 2nd with 3rd > Make them duel
      for (int i = 0; i < population; i = i+2){
 // 2) Add winners of the duels to the winner arraylist
-     if (scores[i]>scores[i+1]) { matingPool.add(chromosomes[i]); }
-                           else { matingPool.add(chromosomes[i+1]); } }
+     if (scores[i]>scores[i+1]) { matingPool.add(chromosomes [i]); }
+                           else { matingPool.add(chromosomes [i+1]); } }
 // 3) Pair up winners
      for (int i = 0; i < population * 0.5; i = i+2) {
           mother = matingPool.get(i);
@@ -48,27 +48,31 @@ public void createGeneration () {
      for (int j = 0; j < 4; j++) {
        for (int z = 0; z < genes; z++) {
 // We generate a random double from 0.00 to 1.00, if it's above 0.5 we take gene from mother, if its below we take gene from the father
-     if (random.nextDouble() > 0.50) { child [z] = mother[z]; }
-                                else { child[z] = father [z]; }
+     if (random.nextDouble() > 0.50) { child [z] = mother [z]; }
+                                else { child [z] = father [z]; }
 // 3.2) Mutate if it rolls below the mutationRate
      if (random.nextDouble()<=mutationRate){
-               child[z] = random.nextDouble(); }   
+               child [z] = random.nextDouble(); }   
 }
 // 3.3) Add the child to the new generation arraylist
      newGen.add(child);
 }
 }
 // 4) Copy newGen to be current (new) generation (chromosomes[][]) and start from step one with new generation
-     chromosomes = newGen.toArray(new double[0][0]);
+     chromosomes = newGen.toArray(new double [0][0]);
+     sendWeightsToBot(chromosomes);
      generation++; // Next generation
 }
-    
-public void sendWeightsToBot () {
+
+public void sendWeightsToBot (double[][] chromosomes) {
 // THIS METHOD WILL BE USED TO SEND CHROMOSOME INFORMATION
-     // Something like this:
-     // Fitness.height_weight = chromosomes [bla][blah];
-     // Fitness.bumpiness_weight = chromosomes [bla][blah+1]
-     // ...
+     for (int i = 0; i < population; i++) {
+          Fitness.lineCleared_weight = chromosomes [i][0];
+          Fitness.height_weight = chromosomes [i][1];
+          Fitness.bumpiness_weight = chromosomes [i][2];
+          Fitness.holes_weight = chromosomes [i][3];
+     }
+     // NEEDS CONNECTION HERE, DUNNO HOW TO FEED THOSE TO THE GAME ENGINE
 }
 
 }
