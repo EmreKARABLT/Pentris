@@ -7,10 +7,10 @@ public class Fitness{
     static double holeScore = 0;
     static double fitnessValue = 0;
 
-    static double lineCleared_weight = 3.55;
-    static double height_weight = 2.715;
-    static double bumpiness_weight = 0.925;
-    static double holes_weight = 0.82075;
+    static double lineCleared_weight = 2;
+    static double height_weight = 1.5;
+    static double bumpiness_weight = 1.2;
+    static double holes_weight = 1.8;
 
 
     //

@@ -3,11 +3,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 public class Bot extends Game implements ActionListener {
+    private static boolean runItInfinitely = true ;
+    private static int iteration = 500 ; 
+    private static int maxScore = 0 ;
 
+    private static ArrayList<Integer> scores = new ArrayList<>();
     public Bot() throws InterruptedException {
+        
         super();
+        isBot = true ;
+        isDumbBot = false ;
+        isDumbestBot = false;
     }
     static KeyListener keys = new KeyListener() {
         @Override
@@ -29,7 +38,24 @@ public class Bot extends Game implements ActionListener {
         Korobeiniki pentrisMusic = new Korobeiniki();
         pentrisMusic.pentrisMusic(Music);
         //////////////////
+        int counter = 0 ;
+        for(int i = 0 ; i < iteration ; i++ ){
+            isGameOver = false;
+            score = 0 ; 
+           
         Bot bot = new Bot();
+        scores.add(score);
+            counter++; 
+            System.out.println(counter);
+            if(score > maxScore) maxScore = score ;
+        }
+        int sum = 0 ;
+        for(int i =  0 ; i < iteration ; i++){
+            sum += scores.get(i);
+        }
+        double average = sum / (double)iteration ;
+        System.out.println( maxScore ); 
+        System.out.println(average);
         f.addKeyListener(keys);
         t =new Timer(tick ,al );
         t.start();
@@ -63,7 +89,7 @@ public class Bot extends Game implements ActionListener {
 //                System.out.println("hit");
                 double fit_value = Fitness.calculateFitness(snapshot);
                 try {
-                     Thread.sleep(50);
+                     Thread.sleep(0);
                 } catch (InterruptedException e) {
                         e.printStackTrace();
                 }
@@ -76,13 +102,15 @@ public class Bot extends Game implements ActionListener {
                 }
 
             }
-                ui.setState(snapshot);
+            // ui.setState(snapshot);
         }
-
-        addPiece(field,PentominoDatabase.data[pieceID][best_m] , best_x , 0);
-        instantDropBot(field , PentominoDatabase.data[pieceID][best_m], best_x  , 0 );
-        ui.setState(field);
-        placeTopPiece();
+        if(isValidPutPiece(field,PentominoDatabase.data[pieceID][best_m] , best_x , 0)){
+            addPiece(field,PentominoDatabase.data[pieceID][best_m] , best_x , 0);
+            instantDropBot(field , PentominoDatabase.data[pieceID][best_m], best_x  , 0 );
+            // ui.setState(field);
+            placeTopPiece();
+        }
+        
     }
 
 
