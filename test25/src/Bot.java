@@ -24,13 +24,12 @@ public class Bot extends Game implements ActionListener {
     public static void main(String[] args) throws InterruptedException {
         JFrame f = UI.window;
 //        since game is parentclass
-////// MUSIC ///////
-String Music = "Pentris.wav";
-Korobeiniki pentrisMusic = new Korobeiniki();
- pentrisMusic.pentrisMusic(Music);
-//////////////////
+        ////// MUSIC ///////
+        String Music = "Pentris.wav";
+        Korobeiniki pentrisMusic = new Korobeiniki();
+        pentrisMusic.pentrisMusic(Music);
+        //////////////////
         Bot bot = new Bot();
-       
         f.addKeyListener(keys);
         t =new Timer(tick ,al );
         t.start();

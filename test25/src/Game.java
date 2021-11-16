@@ -112,18 +112,16 @@ public class Game extends java.util.Timer {
         }
         return field;
     }
-    public static int[][] piecePicker(boolean firstcall)  {
-        if (pieces.size()>1){
+    public static int[][] piecePicker(boolean firstcall) {
+        if (pieces.size()<1){
             for (int i = 0; i<12; i++) pieces.add(i);
         }
-//        Random ran = new Random();
-//        int randomInt = ran.nextInt(pieces.size());
-//        pieceID = pieces.get(randomInt);
-////        pieceID = 2;
-//        if (firstcall) pieces.remove(randomInt);
-//        currentMutation = 0 ;
-        counter++;
-        pieceID = counter % 12  ;
+        Random ran = new Random();
+        int randomInt = ran.nextInt(pieces.size());
+        pieceID = pieces.get(randomInt);
+        
+        if (firstcall) pieces.remove(randomInt);
+        currentMutation = 0 ;
         return PentominoDatabase.data[pieceID][currentMutation];
     }
     public static int[][] placeTopPiece(){
@@ -138,7 +136,7 @@ public class Game extends java.util.Timer {
         scoreForMove = scoreForMove();
         for (int i = 0; i < scoreForMove; i++) {
             deleteLine();
-            score++;
+            
 
         }
         System.out.println("score : " + score);
@@ -172,14 +170,14 @@ public class Game extends java.util.Timer {
         return true;
     }
     public static int[][] addPiece(int[][] grid, int[][] piece, int x, int y) {
-//        if(isValidPutPiece(field , piece , currentX , currentY)) {
+        if(isValidPutPiece(grid , piece , x , y)) {
             for (int i = 0; i < piece.length; i++) {
                 for (int j = 0; j < piece[i].length; j++) {
                     if (i + currentY < HEIGHT && j + currentX < WIDTH && piece[i][j] == 1)
                         grid[y + i][x + j] = pieceID;
                 }
             }
-//        }
+       }
 
         ui.setState(grid);
         return grid;
