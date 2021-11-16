@@ -44,6 +44,7 @@ public class DumbestBot extends Game implements ActionListener {
             DumbestBot bot = new DumbestBot();
             scores.add(score);
             counter++;
+            System.out.println(counter);
             
         }
         int sum = 0 ;
