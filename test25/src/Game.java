@@ -32,7 +32,8 @@ public class Game extends java.util.Timer {
     public static boolean isDropped = false;
     public static boolean isRotated = false;
     public static ArrayList<Integer> pieces = new ArrayList<Integer>(12);
-    public static boolean isBot = true ;
+    public static boolean isBot = false ;
+    public static boolean isDumbBot = true ;
     public static ActionListener al = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -40,6 +41,8 @@ public class Game extends java.util.Timer {
                 t.stop();
             }
             if(isBot){
+                placeTopPiece();
+            }else if(isDumbBot){
                 placeTopPiece();
             }else
                 moveBottom(field);
@@ -144,7 +147,12 @@ public class Game extends java.util.Timer {
         if(!isGameOver && isValidPutPiece(field, piece, currentX, currentY)){
             if(isBot){
                 Bot.pickBestMove();
-            }else {
+            
+            }else if (isDumbBot){
+                
+                DumbBot.pickBestMove();
+
+            } else {    
                 addPiece(field , piece , currentX , currentY );
             }
         }else {
