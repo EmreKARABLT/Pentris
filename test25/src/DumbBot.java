@@ -6,11 +6,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class DumbBot extends Game implements ActionListener {
     private static boolean runItInfinitely = true ;
-    private static int iteration = 10000 ; 
+    private static int iteration = 50000 ; 
     private static ArrayList<Integer> scores = new ArrayList<>();
     public DumbBot() throws InterruptedException {
         super();
@@ -48,7 +49,7 @@ public class DumbBot extends Game implements ActionListener {
             
         }
         int sum = 0 ;
-        for(int i =  0 ; i < iteration ; i++){
+        for(int i =  0 ; i <= iteration ; i++){
             sum += scores.get(i);
         }
         double average = sum / (double)iteration ; 
@@ -85,10 +86,11 @@ public class DumbBot extends Game implements ActionListener {
                 }
                  // dropping into the wrong field
 //                System.out.println("hit");
-                double fit_value = Fitness.heightFitness(snapshot);
                 
+                double fit_value = Fitness.heightFitness(snapshot);
+                System.out.println(fit_value);
                 try {
-                     Thread.sleep(300);
+                     Thread.sleep(0);
                 } catch (InterruptedException e) {
                         e.printStackTrace();
                 }
@@ -108,6 +110,9 @@ public class DumbBot extends Game implements ActionListener {
             instantDropBot(field , PentominoDatabase.data[pieceID][best_m], best_x  , 0 );
             // ui.setState(field);
             placeTopPiece();
-        }   
+        }
+        
+        
     }
+
 }

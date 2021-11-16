@@ -27,7 +27,7 @@ public class Fitness{
         outer:
         for(int i = 0 ; i < Game.HEIGHT ; i++){
             for (int j = 0; j < Game.WIDTH; j++) {
-                if (Game.field[i][j] != -1) {
+                if (grid[i][j] != -1) {
                     heightScore = i;
                     break outer;
                 }
