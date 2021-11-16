@@ -47,7 +47,7 @@ public class UI extends JPanel
 
 
         window = new JFrame("SIGMAtetris");;
-        window.setSize(500,779);
+        window.setSize(500,788);
         //window.setSize(x * size +300, y * size);
         window.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/SigmaGames.png")));
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
