@@ -446,7 +446,7 @@ public class Game extends java.util.Timer {
         ////// MUSIC ///////
         String Music = "Pentris.wav";
         Korobeiniki pentrisMusic = new Korobeiniki();
-       // pentrisMusic.pentrisMusic(Music);
+        pentrisMusic.pentrisMusic(Music);
         ///////////////////
         f.addKeyListener(keys);
         t =new Timer(tick , al);
