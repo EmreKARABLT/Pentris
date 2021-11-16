@@ -454,11 +454,11 @@ public class Game extends java.util.Timer {
     public static void main(String[] args) throws InterruptedException {
         JFrame f = UI.window;
         Game g = new Game();
-        ////// MUSIC ///////
-        String Music = "Pentris.wav";
-        Korobeiniki pentrisMusic = new Korobeiniki();
-        pentrisMusic.pentrisMusic(Music);
-        ///////////////////
+        // ////// MUSIC ///////
+        // String Music = "Pentris.wav";
+        // Korobeiniki pentrisMusic = new Korobeiniki();
+        // pentrisMusic.pentrisMusic(Music);
+        // ///////////////////
         f.addKeyListener(keys);
         t =new Timer(tick , al);
         t.start();

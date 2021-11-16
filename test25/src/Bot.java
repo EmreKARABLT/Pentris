@@ -33,11 +33,11 @@ public class Bot extends Game implements ActionListener {
     public static void main(String[] args) throws InterruptedException {
         JFrame f = UI.window;
 //        since game is parentclass
-        ////// MUSIC ///////
-        String Music = "Pentris.wav";
-        Korobeiniki pentrisMusic = new Korobeiniki();
-        pentrisMusic.pentrisMusic(Music);
-        //////////////////
+        // ////// MUSIC ///////
+        // String Music = "Pentris.wav";
+        // Korobeiniki pentrisMusic = new Korobeiniki();
+        // pentrisMusic.pentrisMusic(Music);
+        // //////////////////
         int counter = 0 ;
         for(int i = 0 ; i < iteration ; i++ ){
             isGameOver = false;
