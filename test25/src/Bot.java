@@ -6,11 +6,7 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 public class Bot extends Game implements ActionListener {
-    private static boolean runItInfinitely = true ;
-    private static int iteration = 500 ; 
-    private static int maxScore = 0 ;
-
-    private static ArrayList<Integer> scores = new ArrayList<>();
+    static boolean testmode = true;
     public Bot() throws InterruptedException {
         
         super();
@@ -38,24 +34,8 @@ public class Bot extends Game implements ActionListener {
         // Korobeiniki pentrisMusic = new Korobeiniki();
         // pentrisMusic.pentrisMusic(Music);
         // //////////////////
-        int counter = 0 ;
-        for(int i = 0 ; i < iteration ; i++ ){
-            isGameOver = false;
-            score = 0 ; 
-           
-        Bot bot = new Bot();
-        scores.add(score);
-            counter++; 
-            System.out.println(counter);
-            if(score > maxScore) maxScore = score ;
-        }
-        int sum = 0 ;
-        for(int i =  0 ; i < iteration ; i++){
-            sum += scores.get(i);
-        }
-        double average = sum / (double)iteration ;
-        System.out.println( maxScore ); 
-        System.out.println(average);
+        if (testmode)Tester.looper(true, false, false);
+        else NormalRun.run(true, false, false);
         f.addKeyListener(keys);
         t =new Timer(tick ,al );
         t.start();

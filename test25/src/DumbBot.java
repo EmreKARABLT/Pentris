@@ -10,9 +10,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class DumbBot extends Game implements ActionListener {
-    private static boolean runItInfinitely = true ;
-    private static int iteration = 5000 ; 
-    private static ArrayList<Integer> scores = new ArrayList<>();
+    static boolean testmode = true;
     public DumbBot() throws InterruptedException {
         super();
         isBot = false ;
@@ -39,23 +37,8 @@ public class DumbBot extends Game implements ActionListener {
         // Korobeiniki pentrisMusic = new Korobeiniki();
         // pentrisMusic.pentrisMusic(Music);
         //////////////////
-        int counter = 0 ;
-        for(int i = 0 ; i < iteration ; i++ ){
-            isGameOver = false;
-            score = 0 ; 
-            DumbBot bot = new DumbBot();
-            scores.add(score);
-            counter++;
-            System.out.println(counter);
-            
-        }
-        int sum = 0 ;
-        for(int i =  0 ; i < iteration ; i++){
-            sum += scores.get(i);
-        }
-        double average = sum / (double)iteration ; 
-        System.out.println(counter);
-        System.out.println(average);
+        if (testmode)Tester.looper(false, true, false);
+        else NormalRun.run(false, true, false);
         f.addKeyListener(keys);
         t =new Timer(tick ,al );
         t.start();

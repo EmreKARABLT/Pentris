@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class DumbestBot extends Game implements ActionListener {
+    static boolean testmode = false;
     private static boolean runItInfinitely = true ;
     private static int iteration = 10000 ; 
     private static ArrayList<Integer> scores = new ArrayList<>();
@@ -37,23 +38,8 @@ public class DumbestBot extends Game implements ActionListener {
         // Korobeiniki pentrisMusic = new Korobeiniki();
         // pentrisMusic.pentrisMusic(Music);
         // //////////////////
-        int counter = 0 ;
-        for(int i = 0 ; i < iteration ; i++ ){
-            isGameOver = false;
-            score = 0 ; 
-            DumbestBot bot = new DumbestBot();
-            scores.add(score);
-            counter++;
-            System.out.println(counter);
-            
-        }
-        int sum = 0 ;
-        for(int i =  0 ; i < iteration ; i++){
-            sum += scores.get(i);
-        }
-        double average = sum / (double)iteration ; 
-        System.out.println(counter);
-        System.out.println(average);
+        if (testmode)Tester.looper(false, false, true);
+        else NormalRun.run(false, false, true);
         f.addKeyListener(keys);
         t =new Timer(tick ,al );
         t.start();
