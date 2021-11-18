@@ -7,7 +7,7 @@ public class NormalRun extends Game{
     public NormalRun() throws InterruptedException{
         super();
     }
-    public static void run(boolean isBot, boolean isDumbBot, boolean isDumbestBot) throws InterruptedException{
+    public static void run(boolean isBot, boolean isDumbBot, boolean isDumbestBot, boolean isBetterBot) throws InterruptedException{
         for(int i = 0 ; i < iteration ; i++ ){
             isGameOver = false;
             score = 0 ; 
@@ -18,6 +18,8 @@ public class NormalRun extends Game{
                 DumbBot bot = new DumbBot();
             } else if (isDumbestBot) {
                 DumbestBot bot = new DumbestBot();
+            } else if (isBetterBot) {
+                BetterBot bot = new BetterBot();
             }  
  
         }

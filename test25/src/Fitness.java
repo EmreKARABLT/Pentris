@@ -6,11 +6,16 @@ public class Fitness{
     static double bumpinessScore = 0;
     static double holeScore = 0;
     static double fitnessValue = 0;
+    static double touchingSides = 0;
+    static double touchingBottom = 0;
 
     static double lineCleared_weight = 2;
-    static double height_weight = 1.5;
-    static double bumpiness_weight = 1.2;
+    static double height_weight = 1;
+    static double bumpiness_weight = 1.5;
     static double holes_weight = 1.8;
+    static double sides_weight = 1;
+    static double bottom_weight = 1;
+    static double block_weight = 0;
 
 
     //
@@ -80,12 +85,78 @@ public class Fitness{
 
     public static double calculateFitness(int[][] grid ){
 
-        double fitnessValue = (double)Game.scoreForMove * lineCleared_weight +
-                (heightFitness(grid) * height_weight) +
-                (bumpFitness(grid) * bumpiness_weight) +
-                (holes(grid) * holes_weight);
-
-//        System.out.println("Fitness value = " + fitnessValue);
+        double fitnessValue = 
+        (double)Game.scoreForMove * lineCleared_weight +
+        (heightFitness(grid) * height_weight) +
+        (bumpFitness(grid) * bumpiness_weight) +
+        (holes(grid) * holes_weight);
         return fitnessValue;
     }
+    
+    public static double touchingSides(int[][] grid){
+        touchingSides = 0;
+        for (int i = 0; i < Game.HEIGHT; i++){
+            if (grid[i][0] != -1) {
+                touchingSides++;    
+            }    
+        }
+        for (int i = 0; i < Game.HEIGHT; i++){
+            if (grid[i][Game.WIDTH-1] != -1) {
+                touchingSides++;
+            }  
+        }
+        return touchingSides;
+    }
+    
+
+    public static double touchingBottom(int[][] grid){
+        touchingBottom = 0;
+        for (int i = 0; i < Game.WIDTH; i++){
+            if (grid[Game.HEIGHT-1][i] != -1) {
+                touchingBottom++;
+            }  
+        }
+        return touchingBottom;
+    }
+    
+    public static double Blocking(int[][] grid){
+        double BlockScore = 0;
+        int holeHeight = 0;
+        for(int i = 0 ; i < Game.WIDTH ; i++){
+            int topPiece = 15;
+            for (int j = 0; j < Game.HEIGHT; j++) {
+                if (grid[j][i] != -1) {
+                    topPiece = j;
+                    break;
+                }
+            }    
+            for (int j = 14; j > topPiece; j--) {
+                if (grid[j][i] == -1 ){
+                    holeHeight = j;
+                    break;
+                }
+            }
+            for (int j = 0; j < holeHeight; j++) {
+                if (grid[j][i] != -1) {
+                    BlockScore--;
+                }
+            }
+        }
+        return BlockScore;
+    }
+    
+
+    public static double calculateOtherFitness(int[][] grid ){
+
+        double fitnessValue = 
+        (double)Game.scoreForMove * lineCleared_weight +
+        (heightFitness(grid) * height_weight) +
+        (bumpFitness(grid) * bumpiness_weight) +
+        (holes(grid) * holes_weight) +
+        (touchingSides(grid) * sides_weight) +
+        (touchingBottom(grid) * bottom_weight) + 
+        (Blocking(grid) * block_weight);
+        return fitnessValue;
+    }
+    
 }

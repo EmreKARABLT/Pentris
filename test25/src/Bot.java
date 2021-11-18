@@ -13,6 +13,7 @@ public class Bot extends Game implements ActionListener {
         isBot = true ;
         isDumbBot = false ;
         isDumbestBot = false;
+        isBetterBot = false;
     }
     static KeyListener keys = new KeyListener() {
         @Override
@@ -34,8 +35,8 @@ public class Bot extends Game implements ActionListener {
         // Korobeiniki pentrisMusic = new Korobeiniki();
         // pentrisMusic.pentrisMusic(Music);
         // //////////////////
-        if (testmode)Tester.looper(true, false, false);
-        else NormalRun.run(true, false, false);
+        if (testmode)Tester.looper(true, false, false, false);
+        else NormalRun.run(true, false, false, false);
         f.addKeyListener(keys);
         t =new Timer(tick ,al );
         t.start();

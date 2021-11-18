@@ -2,13 +2,13 @@ import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 
 public class Tester extends Game{
-    private static int iteration = 1000 ; 
+    private static int iteration = 5000 ; 
     private static int maxScore = 0 ;
     private static ArrayList<Integer> scores = new ArrayList<>();
     public Tester() throws InterruptedException{
         super();
     }
-    public static void looper(boolean isBot, boolean isDumbBot, boolean isDumbestBot) throws InterruptedException{
+    public static void looper(boolean isBot, boolean isDumbBot, boolean isDumbestBot, boolean isBetterBot) throws InterruptedException{
         int counter = 0;
         for(int i = 0 ; i < iteration ; i++ ){
             isGameOver = false;
@@ -20,6 +20,8 @@ public class Tester extends Game{
                 DumbBot bot = new DumbBot();
             } else if (isDumbestBot) {
                 DumbestBot bot = new DumbestBot();
+            } else if (isBetterBot) {
+                BetterBot bot = new BetterBot();
             }  
             scores.add(score);
             counter++; 
@@ -32,7 +34,6 @@ public class Tester extends Game{
         }
         double average = sum / (double)iteration ;
         System.out.println( maxScore );
-        System.out.println(counter);
         System.out.println(average);
     } 
 }

@@ -1,22 +1,19 @@
-import javax.sound.sampled.SourceDataLine;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
 
-public class DumbBot extends Game implements ActionListener {
+public class BetterBot extends Game implements ActionListener {
     static boolean testmode = true;
-    public DumbBot() throws InterruptedException {
+    public BetterBot() throws InterruptedException {
+        
         super();
         isBot = false ;
-        isDumbBot = true ;
+        isDumbBot = false ;
         isDumbestBot = false;
-        isBetterBot = false;
+        isBetterBot = true;
     }
     static KeyListener keys = new KeyListener() {
         @Override
@@ -26,20 +23,20 @@ public class DumbBot extends Game implements ActionListener {
         @Override
         public void keyReleased(KeyEvent e) {}
     };
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+        }
 
     public static void main(String[] args) throws InterruptedException {
         JFrame f = UI.window;
 //        since game is parentclass
-        ////// MUSIC ///////
+        // ////// MUSIC ///////
         // String Music = "Pentris.wav";
         // Korobeiniki pentrisMusic = new Korobeiniki();
         // pentrisMusic.pentrisMusic(Music);
-        //////////////////
-        if (testmode)Tester.looper(false, true, false, false);
-        else NormalRun.run(false, true, false, false);
+        // //////////////////
+        if (testmode)Tester.looper(false, false, false, true);
+        else NormalRun.run(false, false, false, true);
         f.addKeyListener(keys);
         t =new Timer(tick ,al );
         t.start();
@@ -71,8 +68,7 @@ public class DumbBot extends Game implements ActionListener {
                 }
                  // dropping into the wrong field
 //                System.out.println("hit");
-                
-                double fit_value = Fitness.heightFitness(snapshot);
+                double fit_value = Fitness.calculateOtherFitness(snapshot);
                 try {
                      Thread.sleep(0);
                 } catch (InterruptedException e) {
@@ -96,7 +92,10 @@ public class DumbBot extends Game implements ActionListener {
             placeTopPiece();
         }
         
-        
     }
+
+
+
+
 
 }
