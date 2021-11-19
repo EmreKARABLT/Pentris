@@ -6,7 +6,7 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 public class Bot extends Game implements ActionListener {
-    static boolean testmode = true;
+    static boolean testmode = false;
     public Bot() throws InterruptedException {
         
         super();

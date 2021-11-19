@@ -9,12 +9,12 @@ public class Fitness{
     static double touchingSides = 0;
     static double touchingBottom = 0;
 
-    static double lineCleared_weight = 2;
-    static double height_weight = 1;
-    static double bumpiness_weight = 1.5;
-    static double holes_weight = 1.8;
-    static double sides_weight = 1;
-    static double bottom_weight = 1;
+    static double lineCleared_weight = 60;
+    static double height_weight = 5;
+    static double bumpiness_weight = 0;
+    static double holes_weight = 4;
+    static double sides_weight = 0;
+    static double bottom_weight = 0;
     static double block_weight = 0;
 
 

@@ -21,6 +21,7 @@ public class Game extends java.util.Timer {
 //    static int tScore = 0;
     static int scoreForMove;
     public static int pieceID;
+    public static ArrayList <Integer> pieceIDS = new ArrayList<Integer>(0);
     public static UI ui = new UI(WIDTH , HEIGHT ,50);
     public static int currentX = 0 ;
     public static int currentY = 0 ;
@@ -131,6 +132,22 @@ public class Game extends java.util.Timer {
         
         if (firstcall) pieces.remove(randomInt);
         currentMutation = 0 ;
+        if (pieceIDS.size() == 0){
+            pieceIDS.add(0, pieceID);
+            piecePicker(true);
+        }
+        else if (pieceIDS.size() == 1){
+            pieceIDS.add(1, pieceID);
+            piecePicker(true);
+        } else if (pieceIDS.size() == 2 && firstcall){
+            pieceIDS.remove(0);
+            pieceIDS.add(1, pieceID);
+            System.out.println(pieceIDS.toString());
+        pieceID = pieceIDS.get(0);
+        return PentominoDatabase.data[pieceID][currentMutation];
+        }
+        System.out.println(pieceIDS.toString());
+        pieceID = pieceIDS.get(0);
         return PentominoDatabase.data[pieceID][currentMutation];
     }
     public static int[][] placeTopPiece(){
