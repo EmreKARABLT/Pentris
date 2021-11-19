@@ -85,11 +85,16 @@ public class Fitness{
 
     public static double calculateFitness(int[][] grid ){
 
-        double fitnessValue = 
-        (double)Game.scoreForMove * lineCleared_weight +
-        (heightFitness(grid) * height_weight) +
-        (bumpFitness(grid) * bumpiness_weight) +
-        (holes(grid) * holes_weight);
+        GeneticAlgorithm ga = new GeneticAlgorithm();
+        double [][] weights = ga.sendWeightsToBot(ga.chromosomes);
+        int ga_num = ga.getGeneration();
+        double fitnessValue = Game.scoreForMove * weights[ga_num][0] +
+                        (heightFitness(grid) * weights[ga_num][1]) +
+                        (bumpFitness(grid) * weights[ga_num][2]) +
+                        (holes(grid) * weights[ga_num][3]) +
+                        (touchingSides(grid) * weights[ga_num][4]) +
+                        (touchingBottom(grid) * weights[ga_num][5] ) +
+                        (blocking(grid) * weights[ga_num][6]);
         return fitnessValue;
     }
     
@@ -119,7 +124,7 @@ public class Fitness{
         return touchingBottom;
     }
     
-    public static double Blocking(int[][] grid){
+    public static double blocking(int[][] grid){
         double BlockScore = 0;
         int holeHeight = 0;
         for(int i = 0 ; i < Game.WIDTH ; i++){
@@ -155,7 +160,7 @@ public class Fitness{
         (holes(grid) * holes_weight) +
         (touchingSides(grid) * sides_weight) +
         (touchingBottom(grid) * bottom_weight) + 
-        (Blocking(grid) * block_weight);
+        (blocking(grid) * block_weight);
         return fitnessValue;
     }
     
