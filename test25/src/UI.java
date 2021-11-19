@@ -23,7 +23,19 @@ public class UI extends JPanel
     private JLabel score = new JLabel("0",SwingConstants.CENTER);
 
     private JLabel pieceHead = new JLabel("Next piece", SwingConstants.CENTER);
-    private ImageIcon image = new ImageIcon(getClass().getResource("9.png"));
+    private ImageIcon image0 = new ImageIcon(getClass().getResource("0.png"));
+    private ImageIcon image1 = new ImageIcon(getClass().getResource("1.png"));
+    private ImageIcon image2 = new ImageIcon(getClass().getResource("2.png"));
+    private ImageIcon image3 = new ImageIcon(getClass().getResource("3.png"));
+    private ImageIcon image4 = new ImageIcon(getClass().getResource("4.png"));
+    private ImageIcon image5 = new ImageIcon(getClass().getResource("5.png"));
+    private ImageIcon image6 = new ImageIcon(getClass().getResource("6.png"));
+    private ImageIcon image7 = new ImageIcon(getClass().getResource("7.png"));
+    private ImageIcon image8 = new ImageIcon(getClass().getResource("8.png"));
+    private ImageIcon image9 = new ImageIcon(getClass().getResource("9.png"));
+    private ImageIcon image10 = new ImageIcon(getClass().getResource("10.png"));
+    private ImageIcon image11 = new ImageIcon(getClass().getResource("11.png"));
+
     private JLabel piece = new JLabel();
 
     private JLabel rulesHead = new JLabel("HOW TO PLAY", SwingConstants.CENTER);
@@ -69,7 +81,6 @@ public class UI extends JPanel
         add(pieceHead);
 
         piece.setBounds(275,250,200,200);
-        piece.setIcon(image);
         add(piece);
 
         rulesHead.setBounds(300,470,150,40);
@@ -161,6 +172,7 @@ public class UI extends JPanel
     {
         int currScore = Game.score;
         score.setText(String.valueOf(currScore));
+        piece.setIcon(getnextIcon(Game.pieceIDS.get(1)));
 
 
 
@@ -178,5 +190,19 @@ public class UI extends JPanel
         // System.out.println(_state[0].length);
         //Tells the system a frame update is required
         repaint();
+    }
+    private Icon getnextIcon(int i){
+        if(i == 0){ return image0;
+        }else if(i==1){return image1;
+        }else if(i==2){return image2;
+        }else if(i==3){return image3;
+        }else if(i==4){return image4;
+        }else if(i==5){return image5;
+        }else if(i==6){return image6;
+        }else if(i==7){return image7;
+        }else if(i==8){return image8;
+        }else if(i==9){return image9;
+        }else if(i==10){return image10;}
+        else { return image11;}
     }
 }
