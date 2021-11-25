@@ -2,30 +2,24 @@ import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 
 public class Tester extends Game{
-    private static int iteration = 5000 ; 
     private static int maxScore = 0 ;
-    private static ArrayList<Integer> scores = new ArrayList<>();
-    public Tester() throws InterruptedException{
-        super();
-    }
-    public static void looper(boolean isBot, boolean isDumbBot, boolean isDumbestBot, boolean isBetterBot) throws InterruptedException{
+    public static ArrayList<Integer> scores = new ArrayList<>();
+    public static void looper( int iteration , boolean isBetterBot, boolean isBot, boolean isDumbBot, boolean isDumbestBot) {
         int counter = 0;
-        for(int i = 0 ; i < iteration ; i++ ){
+        for (int i = 0; i < iteration; i++) {
             isGameOver = false;
-            score = 0 ; 
-        
-            if (isBot) {
-                Bot bot = new Bot();
-            } else if (isDumbBot) {
-                DumbBot bot = new DumbBot();
-            } else if (isDumbestBot) {
-                DumbestBot bot = new DumbestBot();
-            } else if (isBetterBot) {
-                BetterBot bot = new BetterBot();
-            }  
+            score = 0 ;
+            Bot bot = new Bot();
+
+            int count = 0 ;
+            while(!isGameOver){
+                try {
+                    Thread.sleep(0);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             scores.add(score);
-            counter++; 
-            System.out.println(counter);
             if(score > maxScore) maxScore = score ;
         }
         int sum = 0 ;
@@ -33,8 +27,9 @@ public class Tester extends Game{
             sum += scores.get(i);
         }
         double average = sum / (double)iteration ;
-        System.out.println( maxScore );
-        System.out.println(average);
-    } 
+//        System.out.println("Max score  = " + maxScore );
+//        System.out.printf("Average score after %f iterations = %d \n",average , iteration);
+    }
+
 }
 

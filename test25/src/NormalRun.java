@@ -10,17 +10,18 @@ public class NormalRun extends Game{
     public static void run(boolean isBot, boolean isDumbBot, boolean isDumbestBot, boolean isBetterBot) throws InterruptedException{
         for(int i = 0 ; i < iteration ; i++ ){
             isGameOver = false;
-            score = 0 ; 
-        
-            if (isBot) {
+            score = 0 ;
                 Bot bot = new Bot();
-            } else if (isDumbBot) {
-                DumbBot bot = new DumbBot();
-            } else if (isDumbestBot) {
-                DumbestBot bot = new DumbestBot();
-            } else if (isBetterBot) {
-                BetterBot bot = new BetterBot();
-            }  
+
+//            if (isBot) {
+//                Bot bot = new Bot();
+//            } else if (isDumbBot) {
+//                DumbBot bot = new DumbBot();
+//            } else if (isDumbestBot) {
+//                DumbestBot bot = new DumbestBot();
+//            } else if (isBetterBot) {
+//                BetterBot bot = new BetterBot();
+//            }
  
         }
         System.out.println( score );

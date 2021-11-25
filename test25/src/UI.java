@@ -172,7 +172,7 @@ public class UI extends JPanel
     {
         int currScore = Game.score;
         score.setText(String.valueOf(currScore));
-        piece.setIcon(getnextIcon(Game.pieceIDS.get(1)));
+//        piece.setIcon(getnextIcon(Game.pieceIDS.get(1)));
 
 
 

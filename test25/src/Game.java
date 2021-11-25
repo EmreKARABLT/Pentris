@@ -12,16 +12,12 @@ public class Game extends java.util.Timer {
     public static final int WIDTH = 5;
     public static boolean isGameOver = false;
     public static final int lineDeletionMax = 3;
-    public static int tick = 1000;
+    public static int tick = 500;
+    public static int botTick = 1;
     public static int score = 0;
     public static int counter = 0 ;
-//    static int hScore = 0;
-//    static int bScore = 0;
-//    static int fScore = 0;
-//    static int tScore = 0;
     static int scoreForMove;
     public static int pieceID;
-    public static ArrayList <Integer> pieceIDS = new ArrayList<Integer>(0);
     public static UI ui = new UI(WIDTH , HEIGHT ,50);
     public static int currentX = 0 ;
     public static int currentY = 0 ;
@@ -30,29 +26,27 @@ public class Game extends java.util.Timer {
     public static int[][] piece ;
     public static int[][] prevMut ;
     public static int[][] nextMut ;
+    public static ArrayList <Integer> pieceIDS = new ArrayList<Integer>(0);
     public static boolean isDropped = false;
     public static boolean isRotated = false;
     public static ArrayList<Integer> pieces = new ArrayList<Integer>(12);
     public static boolean isBetterBot = false;
+    //    public static boolean isPlayer = true;
+//    public static boolean isBot = false;
+    public static boolean isPlayer = false;
     public static boolean isBot = false;
     public static boolean isDumbBot = false;
     public static boolean isDumbestBot = false;
+    public static boolean isGaOn= false ;
+
+
     public static ActionListener al = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             if(isGameOver){
                 t.stop();
             }
-            if(isBot){
-                placeTopPiece();
-            }else if(isDumbBot){
-                placeTopPiece();
-            }else if(isDumbestBot){
-                placeTopPiece();
-            }else if(isBetterBot){
-                placeTopPiece();       
-            }else
-                moveBottom(field);
+            moveBottom(field);
         }
     };
     static Timer t ;
@@ -75,7 +69,7 @@ public class Game extends java.util.Timer {
             }
             if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 //
-                moveRight(field , piece );
+                moveRight(field );
             }
             if (e.getKeyCode() == KeyEvent.VK_Z) {
                 if(!isRotated){
@@ -104,16 +98,18 @@ public class Game extends java.util.Timer {
                 isDropped = false;
             }
             if (e.getKeyCode() == KeyEvent.VK_Z) {
-                                 isRotated = false;
+                isRotated = false;
 
             }
         }
     };
 
-    public Game  () throws InterruptedException {
+    public Game  (){
         field = createAnEmptyGrid(HEIGHT , WIDTH );
-        piece = piecePicker(false);
+        piecePicker(false);
         placeTopPiece();
+        t =new Timer( (isPlayer) ? tick : botTick , al);
+        t.start();
     }
     public static int[][] createAnEmptyGrid(int x , int y ){
         int[][] field = new int[x][y] ;
@@ -129,63 +125,92 @@ public class Game extends java.util.Timer {
         Random ran = new Random();
         int randomInt = ran.nextInt(pieces.size());
         pieceID = pieces.get(randomInt);
-        
-        if (firstcall) pieces.remove(randomInt);
-        currentMutation = 0 ;
-        if (pieceIDS.size() == 0){
-            pieceIDS.add(0, pieceID);
-            piecePicker(true);
-        }
-        else if (pieceIDS.size() == 1){
-            pieceIDS.add(1, pieceID);
-            piecePicker(true);
-        } else if (pieceIDS.size() == 2 && firstcall){
-            pieceIDS.remove(0);
-            pieceIDS.add(1, pieceID);
-            System.out.println(pieceIDS.toString());
-        pieceID = pieceIDS.get(0);
-        return PentominoDatabase.data[pieceID][currentMutation];
-        }
-        System.out.println(pieceIDS.toString());
-        pieceID = pieceIDS.get(0);
+//
+//        if (firstcall) pieces.remove(randomInt);
+//        currentMutation = 0 ;
+//        if (pieceIDS.size() == 0){
+//            pieceIDS.add(0, pieceID);
+//            piecePicker(true);
+//        }
+//        else if (pieceIDS.size() == 1){
+//            pieceIDS.add(1, pieceID);
+//            piecePicker(true);
+//        } else if (pieceIDS.size() == 2 && firstcall){
+//            pieceIDS.remove(0);
+//            pieceIDS.add(1, pieceID);
+//            pieceID = pieceIDS.get(0);
+//            return PentominoDatabase.data[pieceID][currentMutation];
+//        }
+//        pieceID = pieceIDS.get(0);
         return PentominoDatabase.data[pieceID][currentMutation];
     }
-    public static int[][] placeTopPiece(){
-        // I will take what was produced from the piecePicker method
-//        Fitness.heightFitness(field);
-//        Fitness.bumpFitness(field);
-//        Fitness.holes(field);
-//        Fitness.totalFitness(field);
+    public static int[][] placeTopPiece()  {
+        if(isGameOver) {
+            return field;
+        }
+
         piece = piecePicker(true);
         currentX = (WIDTH  - piece[0].length - 1 ) / 2  ;
         currentY = 0;
         scoreForMove = scoreForMove();
         for (int i = 0; i < scoreForMove; i++) {
             deleteLine();
-            
-
         }
-        // System.out.println("score : " + score);
-        // ui.setState(field);
+//        System.out.printf("current x = %d current mutation %d\n" , currentX , currentMutation);
         if(!isGameOver && isValidPutPiece(field, piece, currentX, currentY)){
-            if(isBot){
-                Bot.pickBestMove();
-            
-            }else if (isDumbBot){
-                
-                DumbBot.pickBestMove();
-            }else if (isDumbestBot){
-                
-                DumbestBot.pickBestMove();
-            }else if (isBetterBot){
-                
-                BetterBot.pickBestMove();
-            } else {    
-                addPiece(field , piece , currentX , currentY );
+
+            if(!isPlayer) {
+                int[] x_m = Bot.pickBestMove();
+                piece = PentominoDatabase.data[pieceID][x_m[1]];
+                addPiece(field , piece , currentX , currentY);
+
+                int steps = Math.abs(x_m[0] - currentX);
+//                remove(field , piece , currentX , currentY);
+                for(int i = 0 ; i < steps ; i++){
+                    if( x_m[0] < currentX){
+                        moveLeft(field);
+                    }
+                    if ( x_m[0] > currentX ){
+                        moveRight(field);
+                    }
+                }
             }
+            addPiece(field, piece, currentX, currentY);
+//            if(isBot){
+//                for(int i = currentMutation ; i < x_m[1]  ; i++){
+//
+//                    System.out.println("rotation");
+//                    rotation(field);
+//                    ui.setState(field);
+//                }
+//                for(int i = 0 ; i <= Math.abs(currentX - x_m[0]) ; i++){
+//                    try{
+//                        Thread.sleep(100);
+//                    }catch (Exception e ){
+//
+//                    }
+//                    if(x_m[0] > currentX) {
+//
+//                        System.out.println("right");
+//                        moveRight(field);
+//                    }
+//                    if(x_m[0] < currentX) {
+//
+//                        System.out.println("right");
+//                        moveLeft(field);
+//                    }
+//                    else{
+//                        System.out.println("right");
+//                        moveRight(field);
+//                    }
+//                }
+//
+//            }
+            ui.setState(field);
         }else {
-            // System.out.println("GAME OVER");
             isGameOver = true; // Game over, buddy
+//            System.out.println("GAME OVER , score " + score )  ;
+            return field ;
         }
         return field;
     }
@@ -206,6 +231,7 @@ public class Game extends java.util.Timer {
         return true;
     }
     public static int[][] addPiece(int[][] grid, int[][] piece, int x, int y) {
+        ui.setState(field);
         if(isValidPutPiece(grid , piece , x , y)) {
             for (int i = 0; i < piece.length; i++) {
                 for (int j = 0; j < piece[i].length; j++) {
@@ -213,9 +239,9 @@ public class Game extends java.util.Timer {
                         grid[y + i][x + j] = pieceID;
                 }
             }
-       }
+        }
 
-        ui.setState(grid);
+
         return grid;
     }
     public static int[][] remove(int[][] grid, int[][] piece , int x , int y ) {
@@ -225,20 +251,26 @@ public class Game extends java.util.Timer {
                     grid[i + y ][j + x] = -1;
             }
         }
+        ui.setState(grid);
         return grid;
     }
     public static int[][] moveBottom(int[][] field   ) {
         if(isGameOver){return field;}
+        ui.setState(field);
         remove(field , piece  , currentX , currentY);
+
         if (currentY + piece.length < field.length && isValidPutPiece(field, piece, currentX, currentY + 1 ) ) {
             addPiece(field, piece, currentX , currentY + 1);
             currentY++;
+            ui.setState(field);
         }else{
             addPiece(field , piece , currentX , currentY);
+            ui.setState(field);
             piece = piecePicker(false);
             placeTopPiece();
         }
         ui.setState(field);
+
         return field;
     }
     public static int[][] instantDrop(){
@@ -274,7 +306,7 @@ public class Game extends java.util.Timer {
 //        System.out.println("=============BOT DROPPED IT TO  " + x + "  " + y);
         return addPiece(grid , piece , x , y);
     }
-    public static int[][] moveRight(int[][] field , int[][] piece  ) {
+    public static int[][] moveRight(int[][] field ) {
         if(isGameOver){return field;}
         remove(field , piece , currentX , currentY );
         if (currentX + piece[0].length + 1 <= field[0].length && isValidPutPiece(field, piece, currentX +1, currentY ) ) {
@@ -326,7 +358,7 @@ public class Game extends java.util.Timer {
         } if (pieceID == 7 || pieceID == 8 || pieceID == 10){
             if (currentMutation == 0){
                 if (currentX >=WIDTH-2) currentX = WIDTH-4
-                         ;
+                        ;
                 caseNumber = 3;
                 return rotationPlacer(nextMut, prevMut, caseNumber);
             }   else if (currentMutation == 1){
@@ -405,7 +437,7 @@ public class Game extends java.util.Timer {
             addPiece(field, piece, x, y);
             currentMutation--;
         }
-//        ui.setState(field);
+        ui.setState(field);
         return field;
     }
     public static int scoreForMove(){
@@ -434,18 +466,18 @@ public class Game extends java.util.Timer {
 
         int[] emptyRow = new int[WIDTH];
         Arrays.fill(emptyRow ,  -1 );
-        
-            outer:
-            for(int i = HEIGHT - 1 ; i >=1 ; i-- ){
-                if(field[i][0] == -10 ){
-                    for(int x = i ; x > 0 ; x--){
-                        field[x] = field[x - 1];
-                    }
-                    field[0] = emptyRow;
-                    break outer;
+
+        outer:
+        for(int i = HEIGHT - 1 ; i >=1 ; i-- ){
+            if(field[i][0] == -10 ){
+                for(int x = i ; x > 0 ; x--){
+                    field[x] = field[x - 1];
                 }
+                field[0] = emptyRow;
+                break outer;
             }
-            ui.setState(field);
+        }
+        ui.setState(field);
 
 
 //        outer:
@@ -473,18 +505,16 @@ public class Game extends java.util.Timer {
         int[][] pieceToPlace =PentominoDatabase.data[pieceID][currentMutation];
         return pieceToPlace;
     }
-
     public static void main(String[] args) throws InterruptedException {
         JFrame f = UI.window;
+        f.addKeyListener(keys);
         Game g = new Game();
         // ////// MUSIC ///////
         // String Music = "Pentris.wav";
         // Korobeiniki pentrisMusic = new Korobeiniki();
         // pentrisMusic.pentrisMusic(Music);
         // ///////////////////
-        f.addKeyListener(keys);
-        t =new Timer(tick , al);
-        t.start();
+
 
     }
 

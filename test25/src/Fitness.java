@@ -9,14 +9,23 @@ public class Fitness{
     static double touchingSides = 0;
     static double touchingBottom = 0;
 
-    static double lineCleared_weight = 60;
-    static double height_weight = 5;
-    static double bumpiness_weight = 0;
-    static double holes_weight = 4;
-    static double sides_weight = 0;
-    static double bottom_weight = 0;
+    static double lineCleared_weight = 100;
+    static double height_weight = 1;
+    static double bumpiness_weight = 1.5;
+    static double holes_weight = 1.8;
+    static double sides_weight = 1;
+    static double bottom_weight = 1;
     static double block_weight = 0;
 
+    public static double calculateFitness(int[][] grid  ) {
+
+
+        double fitnessValue = Game.scoreForMove *lineCleared_weight+
+                heightFitness(grid) * height_weight +
+                bumpFitness(grid) * bumpiness_weight +
+                holes(grid) * holes_weight  ;
+        return fitnessValue;
+    }
 
     //
 //    public Fitness(){
@@ -82,48 +91,29 @@ public class Fitness{
 //        System.out.println("Hole score = " + holeScore);
         return holeScore;
     }
-
-    public static double calculateFitness(int[][] grid ){
-
-        GeneticAlgorithm ga = new GeneticAlgorithm();
-        double [][] weights = ga.sendWeightsToBot(ga.chromosomes);
-        int ga_num = ga.getGeneration();
-        double fitnessValue = Game.scoreForMove * weights[ga_num][0] +
-                        (heightFitness(grid) * weights[ga_num][1]) +
-                        (bumpFitness(grid) * weights[ga_num][2]) +
-                        (holes(grid) * weights[ga_num][3]) +
-                        (touchingSides(grid) * weights[ga_num][4]) +
-                        (touchingBottom(grid) * weights[ga_num][5] ) +
-                        (blocking(grid) * weights[ga_num][6]);
-        return fitnessValue;
-    }
-    
     public static double touchingSides(int[][] grid){
         touchingSides = 0;
         for (int i = 0; i < Game.HEIGHT; i++){
             if (grid[i][0] != -1) {
-                touchingSides++;    
-            }    
+                touchingSides++;
+            }
         }
         for (int i = 0; i < Game.HEIGHT; i++){
             if (grid[i][Game.WIDTH-1] != -1) {
                 touchingSides++;
-            }  
+            }
         }
         return touchingSides;
     }
-    
-
     public static double touchingBottom(int[][] grid){
         touchingBottom = 0;
         for (int i = 0; i < Game.WIDTH; i++){
             if (grid[Game.HEIGHT-1][i] != -1) {
                 touchingBottom++;
-            }  
+            }
         }
         return touchingBottom;
     }
-    
     public static double blocking(int[][] grid){
         double BlockScore = 0;
         int holeHeight = 0;
@@ -134,7 +124,7 @@ public class Fitness{
                     topPiece = j;
                     break;
                 }
-            }    
+            }
             for (int j = 14; j > topPiece; j--) {
                 if (grid[j][i] == -1 ){
                     holeHeight = j;
@@ -149,19 +139,16 @@ public class Fitness{
         }
         return BlockScore;
     }
-    
-
     public static double calculateOtherFitness(int[][] grid ){
-
-        double fitnessValue = 
-        (double)Game.scoreForMove * lineCleared_weight +
-        (heightFitness(grid) * height_weight) +
-        (bumpFitness(grid) * bumpiness_weight) +
-        (holes(grid) * holes_weight) +
-        (touchingSides(grid) * sides_weight) +
-        (touchingBottom(grid) * bottom_weight) + 
-        (blocking(grid) * block_weight);
+        double fitnessValue =
+                (double)Game.scoreForMove * lineCleared_weight +
+                        (heightFitness(grid) * height_weight) +
+                        (bumpFitness(grid) * bumpiness_weight) +
+                        (holes(grid) * holes_weight) +
+                        (touchingSides(grid) * sides_weight) +
+                        (touchingBottom(grid) * bottom_weight) +
+                        (blocking(grid) * block_weight);
         return fitnessValue;
     }
-    
+
 }

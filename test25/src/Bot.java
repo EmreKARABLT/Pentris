@@ -3,17 +3,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 
 public class Bot extends Game implements ActionListener {
-    static boolean testmode = false;
-    public Bot() throws InterruptedException {
-        
-        super();
-        isBot = true ;
-        isDumbBot = false ;
-        isDumbestBot = false;
-        isBetterBot = false;
+    static boolean testmode = true;
+    Game game ;
+    public Bot()  {
+        isBot = true;
+        isPlayer = false ;
+        game = new Game();
+
     }
     static KeyListener keys = new KeyListener() {
         @Override
@@ -23,56 +23,51 @@ public class Bot extends Game implements ActionListener {
         @Override
         public void keyReleased(KeyEvent e) {}
     };
-        @Override
-        public void actionPerformed(ActionEvent e) {
-        }
-
-    public static void main(String[] args) throws InterruptedException {
-        JFrame f = UI.window;
-//        since game is parentclass
-        // ////// MUSIC ///////
-        // String Music = "Pentris.wav";
-        // Korobeiniki pentrisMusic = new Korobeiniki();
-        // pentrisMusic.pentrisMusic(Music);
-        // //////////////////
-        if (testmode)Tester.looper(true, false, false, false);
-        else NormalRun.run(true, false, false, false);
-        f.addKeyListener(keys);
-        t =new Timer(tick ,al );
-        t.start();
-
+    @Override
+    public void actionPerformed(ActionEvent e) {
     }
 
-    public static void pickBestMove(){
+    public static void main(String[] args){
+        botTick = 3;
+        Tester.looper(1000 , true , false , false , false );
+    }
+
+
+    public static int[] pickBestMove(){
+        Random ran = new Random();
+        int[] bestPlacement = new int[2];
         int[][] snapshot = createAnEmptyGrid(HEIGHT , WIDTH );
-
-        if(isGameOver){return; }
+        if(isGameOver){
+            return bestPlacement ;
+        }
         ui.setState(snapshot);
-
-//        System.out.println(snapshot + " "  + field);
+        double fit_value = 0 ;
         double max = -9999;
         int best_x = 0 ;
-        int best_Y = 0 ;
         int best_m = 0 ;
-//        System.out.println(PentominoDatabase.data[pieceID].length);
         for(int m = 0 ; m < PentominoDatabase.data[pieceID].length ; m++){
             for( int x = 0 ; x <= WIDTH -  PentominoDatabase.data[pieceID][m][0].length   ; x++){
-//                System.out.printf("Mutation : %d , x : %d \n" , m , x );
                 for(int i = 0 ; i < HEIGHT ; i++){
 
                     snapshot[i] = field[i].clone();
                 }
+
                 if(isValidPutPiece(snapshot ,PentominoDatabase.data[pieceID][m] , x , 0 )) {
                     snapshot = addPiece(snapshot, PentominoDatabase.data[pieceID][m], x, 0);
                     snapshot = instantDropBot(snapshot, PentominoDatabase.data[pieceID][m], x, 0);
+
                 }
-                 // dropping into the wrong field
-//                System.out.println("hit");
-                double fit_value = Fitness.calculateFitness(snapshot);
-                try {
-                     Thread.sleep(0);
-                } catch (InterruptedException e) {
-                        e.printStackTrace();
+                if(isBot)
+                    fit_value = Fitness.calculateFitness(snapshot);
+                if(isDumbBot)
+                    fit_value = Fitness.heightFitness(snapshot);
+                if(isBetterBot)
+                    fit_value = Fitness.calculateOtherFitness(snapshot);
+                if(isDumbestBot)
+                    best_m = ran.nextInt(PentominoDatabase.data[pieceID].length ) ;
+                best_x = 0;
+                if( PentominoDatabase.data[pieceID][m][0].length < 5 ){
+                    best_x = ran.nextInt(WIDTH -  PentominoDatabase.data[pieceID][m][0].length +1 );
                 }
 
 
@@ -83,19 +78,10 @@ public class Bot extends Game implements ActionListener {
                 }
 
             }
-            // ui.setState(snapshot);
         }
-        if(isValidPutPiece(field,PentominoDatabase.data[pieceID][best_m] , best_x , 0)){
-            addPiece(field,PentominoDatabase.data[pieceID][best_m] , best_x , 0);
-            instantDropBot(field , PentominoDatabase.data[pieceID][best_m], best_x  , 0 );
-            // ui.setState(field);
-            placeTopPiece();
-        }
-        
+        bestPlacement[0] = best_x;
+        bestPlacement[1] = best_m;
+
+        return bestPlacement;
     }
-
-
-
-
-
 }
