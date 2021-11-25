@@ -32,14 +32,14 @@ public class GeneticAlgorithm {
      public static double[][] createGeneration () {
           // THIS METHOD WILL BE USED TO FIND THE WINNER BOTS AND MAKE BABIES TO MAKE A NEW GENERATION
           ArrayList<double[]> matingPool = new ArrayList<double[]>(); // This is where winner bots will have sex
-          double[][] newGen = new double[20][7]; // This is where we will store our babies
+          double[][] newGen = new double[population][7]; // This is where we will store our babies
 
           double [] mother; // These will be used to generate new babies, new offsprings (Same as Winner and Winner + 1)
           double [] father;
           // Products of mother and father
           int counterChild = 0 ;
           // 1) Delete 50% of population (Tournament selection we know from CCN)> Pair up 0th with 1st, 2nd with 3rd > Make them duel
-          for (int i = 0; i < population; i = i+2){
+          for (int i = 0; i < population ; i = i+2){
                // 2) Add winners of the duels to the winner arraylist
                if (scores[i]>scores[i+1])
                     matingPool.add(chromosomes [i]);
@@ -49,10 +49,7 @@ public class GeneticAlgorithm {
 
 //          System.out.println( "Mating pool  " + matingPool.size() +" " +(Arrays.deepToString(matingPool.toArray())));
           // 3) Pair up winners
-          for(int i = 0; i < matingPool.size(); i = i+2){
-               if(i == 0 ){
-                    counterChild=0 ;
-               }
+          for(int i = 0; i < population * 0.5; i = i+2){
                mother = matingPool.get(i);
                father = matingPool.get(i+1);
                // 3.1) Generate 4 childs (Offsprings) by 50/50 of parents chromosomes
@@ -71,7 +68,7 @@ public class GeneticAlgorithm {
                     }
 //                    System.out.println("CHILD " + counterChild + " " +Arrays.toString(child));
 
-                    newGen[counterChild]=child;
+                    newGen[counterChild ] = child;
                     counterChild++;
                     // 3.3) Add the child to the new generation arraylist
                }
@@ -108,7 +105,7 @@ public class GeneticAlgorithm {
                Fitness.bottom_weight = chromosomes [i][5];
                Fitness.block_weight = chromosomes [i][6];
 //               System.out.println("GAME " + i + "  -------- " + Arrays.toString(chromosomes[i]));
-               Tester.looper(1, true, false, false, false);
+               Tester.looper(1, true ,  false, false, false);
                //          try{
 //               Thread.sleep(1000);
 //          }catch (Exception e ){
@@ -144,7 +141,7 @@ public class GeneticAlgorithm {
 
      public static void main(String[] args) {
           GeneticAlgorithm ga = new GeneticAlgorithm();
-          while(generation<21){
+          while(generation<20){
                getScores(chromosomes);
                createGeneration();
           }

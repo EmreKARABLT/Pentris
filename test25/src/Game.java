@@ -30,14 +30,13 @@ public class Game extends java.util.Timer {
     public static boolean isDropped = false;
     public static boolean isRotated = false;
     public static ArrayList<Integer> pieces = new ArrayList<Integer>(12);
-    public static boolean isBetterBot = false;
     //    public static boolean isPlayer = true;
 //    public static boolean isBot = false;
-    public static boolean isPlayer = false;
-    public static boolean isBot = false;
-    public static boolean isDumbBot = false;
-    public static boolean isDumbestBot = false;
-    public static boolean isGaOn= false ;
+    public static boolean isPlayer ;
+    public static boolean isBetterBot;
+    public static boolean isBot ;
+    public static boolean isDumbBot ;
+    public static boolean isDumbestBot ;
 
 
     public static ActionListener al = new ActionListener() {
@@ -104,7 +103,12 @@ public class Game extends java.util.Timer {
         }
     };
 
-    public Game  (){
+    public Game(boolean isPlayer ,boolean isBetterBot , boolean isBot , boolean isDumbBot , boolean isDumbestBot){
+        this.isPlayer = isPlayer ;
+        this.isBetterBot = isBetterBot;
+        this.isBot = isBot ;
+        this.isDumbBot = isDumbBot;
+        this.isDumbestBot = isDumbestBot ;
         field = createAnEmptyGrid(HEIGHT , WIDTH );
         piecePicker(false);
         placeTopPiece();
@@ -160,7 +164,14 @@ public class Game extends java.util.Timer {
         if(!isGameOver && isValidPutPiece(field, piece, currentX, currentY)){
 
             if(!isPlayer) {
-                int[] x_m = Bot.pickBestMove();
+                int[] x_m = new int[2];
+                if(isBot)
+                    x_m = Bot.pickBestMove();
+                if(isBetterBot)
+                    x_m = BetterBot.pickBestMove();
+                if(isDumbBot)
+                    x_m = DumbBot.pickBestMove();
+
                 piece = PentominoDatabase.data[pieceID][x_m[1]];
                 addPiece(field , piece , currentX , currentY);
 
@@ -508,7 +519,7 @@ public class Game extends java.util.Timer {
     public static void main(String[] args) throws InterruptedException {
         JFrame f = UI.window;
         f.addKeyListener(keys);
-        Game g = new Game();
+        Game g = new Game(true , false , false , false , false );
         // ////// MUSIC ///////
         // String Music = "Pentris.wav";
         // Korobeiniki pentrisMusic = new Korobeiniki();

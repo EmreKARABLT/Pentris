@@ -8,11 +8,10 @@ import java.util.Random;
 
 public class Bot extends Game implements ActionListener {
     static boolean testmode = true;
-    Game game ;
     public Bot()  {
-        isBot = true;
-        isPlayer = false ;
-        game = new Game();
+
+        super(false, false , true , false , false);
+
 
     }
     static KeyListener keys = new KeyListener() {
@@ -57,20 +56,9 @@ public class Bot extends Game implements ActionListener {
                     snapshot = instantDropBot(snapshot, PentominoDatabase.data[pieceID][m], x, 0);
 
                 }
-                if(isBot)
-                    fit_value = Fitness.calculateFitness(snapshot);
-                if(isDumbBot)
-                    fit_value = Fitness.heightFitness(snapshot);
-                if(isBetterBot)
-                    fit_value = Fitness.calculateOtherFitness(snapshot);
-                if(isDumbestBot)
-                    best_m = ran.nextInt(PentominoDatabase.data[pieceID].length ) ;
-                best_x = 0;
-                if( PentominoDatabase.data[pieceID][m][0].length < 5 ){
-                    best_x = ran.nextInt(WIDTH -  PentominoDatabase.data[pieceID][m][0].length +1 );
-                }
+                fit_value = Fitness.calculateFitness(snapshot);
 
-
+//
                 if( fit_value > max){
                     best_x = x ;
                     best_m = m ;

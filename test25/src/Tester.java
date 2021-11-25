@@ -4,13 +4,28 @@ import java.util.ArrayList;
 public class Tester extends Game{
     private static int maxScore = 0 ;
     public static ArrayList<Integer> scores = new ArrayList<>();
+
+    public Tester(boolean isPlayer, boolean isBetterBot, boolean isBot, boolean isDumbBot, boolean isDumbestBot) {
+        super(isPlayer, isBetterBot, isBot, isDumbBot, isDumbestBot);
+    }
+
     public static void looper( int iteration , boolean isBetterBot, boolean isBot, boolean isDumbBot, boolean isDumbestBot) {
         int counter = 0;
         for (int i = 0; i < iteration; i++) {
             isGameOver = false;
             score = 0 ;
-            Bot bot = new Bot();
-
+                Bot bot;
+                BetterBot betterBot ;
+                DumbBot dumbBot ;
+                DumbestBot dumbestBot;
+            if(isBetterBot)
+                betterBot = new BetterBot();
+            if(isBot)
+                bot = new Bot();
+            if(isDumbBot)
+                dumbBot = new DumbBot();
+            if(isDumbestBot)
+                dumbestBot = new DumbestBot();
             int count = 0 ;
             while(!isGameOver){
                 try {
