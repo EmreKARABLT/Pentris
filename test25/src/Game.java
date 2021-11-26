@@ -173,19 +173,21 @@ public class Game extends java.util.Timer {
                     x_m = DumbBot.pickBestMove();
 
                 piece = PentominoDatabase.data[pieceID][x_m[1]];
-                addPiece(field , piece , currentX , currentY);
-
-                int steps = Math.abs(x_m[0] - currentX);
-//                remove(field , piece , currentX , currentY);
-                for(int i = 0 ; i < steps ; i++){
-                    if( x_m[0] < currentX){
-                        moveLeft(field);
-                    }
-                    if ( x_m[0] > currentX ){
-                        moveRight(field);
-                    }
-                }
+                currentX = x_m[0];
+                addPiece(field , piece , x_m[0] , 0 );
+                instantDrop();
+//                int steps = Math.abs(x_m[0] - currentX);
+////                remove(field , piece , currentX , currentY);
+//                for(int i = 0 ; i < steps ; i++){
+//                    if( x_m[0] < currentX){
+//                        moveLeft(field);
+//                    }
+//                    if ( x_m[0] > currentX ){
+//                        moveRight(field);
+//                    }
+//                }
             }
+
             addPiece(field, piece, currentX, currentY);
 //            if(isBot){
 //                for(int i = currentMutation ; i < x_m[1]  ; i++){
