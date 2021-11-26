@@ -1,24 +1,36 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 public class GeneticAlgorithm {
+     public static PrintWriter writer;
+
+     static {
+          try {
+               writer = new PrintWriter("generation-weights__.csv", "UTF-8");
+          } catch (FileNotFoundException e) {
+               e.printStackTrace();
+          } catch (UnsupportedEncodingException e) {
+               e.printStackTrace();
+          }
+     }
 
      // Weight variables
-     public static double mutationRate = 0.1; // The chance for a gene (weight) to mutate
+     public static double mutationRate = 0.05; // The chance for a gene (weight) to mutate
      private static double weightMin = 0; // The min weight value
      private static double weightMax = 1; // The max weight value
      private static int genes = 7; // Number of genes (weights)
 
      // GA variables
-     public static int population = 1000 ; // The amount of "fighter - bots" (The amount of chromosomes)
+     public static int population = 1200 ; // The amount of "fighter - bots" (The amount of chromosomes)
      public static int generation = 1; // Which generation is it. Generation is a set of chromosomes;
      public static double[][] chromosomes = new double [population][genes]; // Our chromosomes
      private static double[] scores = new double [population]; // Scores that bots get will be stored here
      public static Random random = new Random(); // This is used to generate random values
      Bot bot  ;
      ///////////////// CONSTRUCTOR //////////////////////
-     public GeneticAlgorithm () {
-
-          // Creating our chromosomes with a random genes (random weight value)
+     public GeneticAlgorithm () throws FileNotFoundException, UnsupportedEncodingException {
           for (int i = 0; i < population; i++) {
                for (int j = 0; j < genes; j++) {
                     chromosomes[i][j]=random.nextDouble(); // Some values from 0 (incl.) to 1 (excl.)
@@ -27,10 +39,19 @@ public class GeneticAlgorithm {
 //          printMDArray(chromosomes);
      }
      ///////////////////////////////////////////////////
+     public static void geneticAlgorithmRun() throws FileNotFoundException, UnsupportedEncodingException {
+          // Creating our chromosomes with a random genes (random weight value)
+          GeneticAlgorithm ga = new GeneticAlgorithm();
+          while(generation<200){
+               getScores(chromosomes);
+               createGeneration();
+          }
 
-     public static double[][] createGeneration () {
+     }
+     public static double[][] createGeneration () throws FileNotFoundException, UnsupportedEncodingException {
           // THIS METHOD WILL BE USED TO FIND THE WINNER BOTS AND MAKE BABIES TO MAKE A NEW GENERATION
           ArrayList<double[]> matingPool = new ArrayList<double[]>(); // This is where winner bots will have sex
+
           double[][] newGen = new double[population][genes]; // This is where we will store our babies
 
           double [] mother; // These will be used to generate new babies, new offsprings (Same as Winner and Winner + 1)
@@ -45,6 +66,7 @@ public class GeneticAlgorithm {
                else
                     matingPool.add(chromosomes [i+1]);
           }
+//          matingPool = getParents(scores , chromosomes , 4);
 
 //          System.out.println( "Mating pool  " + matingPool.size() +" " +(Arrays.deepToString(matingPool.toArray())));
           // 3) Pair up winners
@@ -99,6 +121,15 @@ public class GeneticAlgorithm {
           System.out.println("Average score is " + average);
           System.out.println("Max score is " + max);
           System.out.println("Min score is " + min);
+
+
+          for(int i = 0; i < newGen.length; i++) {
+
+               writer.print(generation + "," + max+","+min + ","+average+","+ scores[i]+"," + Arrays.toString(newGen[i]) +",");
+
+               writer.println();
+          }
+
           ////////////////////////////////
           generation++;
           return newGen;
@@ -109,9 +140,7 @@ public class GeneticAlgorithm {
 
      public static double[][] getScores(double[][] chromosomes) {
 // THIS METHOD WILL BE USED TO SEND CHROMOSOME INFORMATION
-          for(int i=0; i<scores.length; i++){
-               scores[i]=0;
-          }
+          Arrays.fill(scores, 0);
 
           for (int i = 0; i < population; i++) {
                Fitness.lineCleared_weight = chromosomes [i][0];
@@ -122,7 +151,7 @@ public class GeneticAlgorithm {
                Fitness.bottom_weight = chromosomes [i][5];
                Fitness.block_weight = chromosomes [i][6];
 //               System.out.println("GAME " + i + "  -------- " + Arrays.toString(chromosomes[i]));
-               Tester.looper(1, true, false, false, false);
+               Tester.looper(1, false, true, false, false);
                //          try{
 //               Thread.sleep(1000);
 //          }catch (Exception e ){
@@ -150,18 +179,39 @@ public class GeneticAlgorithm {
                System.out.println();
           }
      }
+     public static ArrayList<double[]> getParents(double[] score , double[][] chromosome , int parentNumber){
+//          parentNumber = ( parentNumber  ) * 4 ;
+          ArrayList<Double> score_al = new ArrayList<>();
+          ArrayList<double[]> chromosome_al = new ArrayList<>();
+          ArrayList<double[]> parents_al= new ArrayList<>();
+          for(int i = 0  ; i < score.length ; i++){
+               score_al.add(score[i]);
+               chromosome_al.add(chromosome[i]);
+          }
+          while(parents_al.size() < parentNumber) {
+               double max = 0;
+               int indexOfMax = 0;
+               for (int i = 0; i < score_al.size(); i++) {
+                    if (score_al.get(i) > max) {
+                         max = score_al.get(i);
+                         indexOfMax = i;
+                    }
+               }
+               System.out.println(max );
+               parents_al.add(chromosome_al.get(indexOfMax));
+               score_al.remove(indexOfMax);
+               chromosome_al.remove(indexOfMax);
+          }
+          return parents_al;
+     }
      public static double[][] shuffleArray(double[][] arr){
           List<double[]> l = Arrays.asList(arr);
           Collections.shuffle(l);
           return l.toArray(new double[0][0]);
      }
 
-     public static void main(String[] args) {
-          GeneticAlgorithm ga = new GeneticAlgorithm();
-          while(generation<100){
-               getScores(chromosomes);
-               createGeneration();
-          }
+     public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
 
+          geneticAlgorithmRun();
      }
 }

@@ -126,9 +126,9 @@ public class Game extends java.util.Timer {
         if (pieces.size()<1){
             for (int i = 0; i<12; i++) pieces.add(i);
         }
-        Random ran = new Random();
-        int randomInt = ran.nextInt(pieces.size());
-        pieceID = pieces.get(randomInt);
+//        Random ran = new Random();
+//        int randomInt = ran.nextInt(pieces.size());
+//        pieceID = pieces.get(randomInt);
 //
 //        if (firstcall) pieces.remove(randomInt);
 //        currentMutation = 0 ;
@@ -146,7 +146,9 @@ public class Game extends java.util.Timer {
 //            return PentominoDatabase.data[pieceID][currentMutation];
 //        }
 //        pieceID = pieceIDS.get(0);
-        return PentominoDatabase.data[pieceID][currentMutation];
+        counter ++;
+        pieceID = counter % 11 ;
+        return PentominoDatabase.data[pieceID  ][currentMutation];
     }
     public static int[][] placeTopPiece()  {
         if(isGameOver) {
