@@ -23,7 +23,7 @@ public class GeneticAlgorithm {
      private static int genes = 7; // Number of genes (weights)
 
      // GA variables
-     public static int population = 1200 ; // The amount of "fighter - bots" (The amount of chromosomes)
+     public static int population = 100 ; // The amount of "fighter - bots" (The amount of chromosomes)
      public static int generation = 1; // Which generation is it. Generation is a set of chromosomes;
      public static double[][] chromosomes = new double [population][genes]; // Our chromosomes
      private static double[] scores = new double [population]; // Scores that bots get will be stored here
@@ -151,13 +151,9 @@ public class GeneticAlgorithm {
                Fitness.bottom_weight = chromosomes [i][5];
                Fitness.block_weight = chromosomes [i][6];
 //               System.out.println("GAME " + i + "  -------- " + Arrays.toString(chromosomes[i]));
-               Tester.looper(1, false, true, false, false);
-               //          try{
-//               Thread.sleep(1000);
-//          }catch (Exception e ){
-//          }
-//          System.out.println(Bot.score);
-               scores[i] = Bot.score ;
+               Tester.looper(100, false, true, false, false);
+
+               scores[i] = Tester.average ;
           }
 //          System.out.println(Arrays.toString(scores));
           return chromosomes;

@@ -110,7 +110,7 @@ public class Game extends java.util.Timer {
         this.isDumbBot = isDumbBot;
         this.isDumbestBot = isDumbestBot ;
         field = createAnEmptyGrid(HEIGHT , WIDTH );
-        piecePicker(false);
+//        piecePicker(false);
         placeTopPiece();
         t =new Timer( (isPlayer) ? tick : botTick , al);
         t.start();
@@ -126,10 +126,10 @@ public class Game extends java.util.Timer {
         if (pieces.size()<1){
             for (int i = 0; i<12; i++) pieces.add(i);
         }
-//        Random ran = new Random();
-//        int randomInt = ran.nextInt(pieces.size());
-//        pieceID = pieces.get(randomInt);
-//
+        Random ran = new Random();
+        int randomInt = ran.nextInt(pieces.size());
+        pieceID = pieces.get(randomInt);
+
 //        if (firstcall) pieces.remove(randomInt);
 //        currentMutation = 0 ;
 //        if (pieceIDS.size() == 0){
@@ -146,9 +146,10 @@ public class Game extends java.util.Timer {
 //            return PentominoDatabase.data[pieceID][currentMutation];
 //        }
 //        pieceID = pieceIDS.get(0);
-        counter ++;
-        pieceID = counter % 11 ;
-        return PentominoDatabase.data[pieceID  ][currentMutation];
+//        counter ++;
+//        pieceID = counter % 12 ;
+//        System.out.println(pieceID);
+        return PentominoDatabase.data[pieceID][currentMutation];
     }
     public static int[][] placeTopPiece()  {
         if(isGameOver) {
@@ -281,7 +282,7 @@ public class Game extends java.util.Timer {
         }else{
             addPiece(field , piece , currentX , currentY);
             ui.setState(field);
-            piece = piecePicker(false);
+//            piece = piecePicker(false);
             placeTopPiece();
         }
         ui.setState(field);
@@ -297,7 +298,7 @@ public class Game extends java.util.Timer {
                 currentY++;
             } else {
                 addPiece(field, piece, currentX, currentY);
-                piece = piecePicker(false);
+//                piece = piecePicker(false);
                 placeTopPiece();
                 break;
             }
