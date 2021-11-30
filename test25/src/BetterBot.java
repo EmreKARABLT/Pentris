@@ -1,13 +1,12 @@
-import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
+
 import java.util.Random;
 
 public class BetterBot extends Game implements ActionListener {
-    static boolean testmode = true;
     public BetterBot() {
         super(false , true , false , false , false );
     }
@@ -23,27 +22,15 @@ public class BetterBot extends Game implements ActionListener {
         public void actionPerformed(ActionEvent e) {
         }
 
-    public static void main(String[] args)  {
-//        JFrame f = UI.window;
-//        since game is parentclass
-        // ////// MUSIC ///////
-        // String Music = "Pentris.wav";
-        // Korobeiniki pentrisMusic = new Korobeiniki();
-        // pentrisMusic.pentrisMusic(Music);
-        // //////////////////
 
-
-    }
 
     public static int[] pickBestMove(){
         Random ran = new Random();
         int[] bestPlacement = new int[2];
         int[][] snapshot = createAnEmptyGrid(HEIGHT , WIDTH );
-        if(isGameOver){
-            return bestPlacement ;
-        }
-        ui.setState(snapshot);
-        double fit_value = 0 ;
+        if(isGameOver){ return bestPlacement ;}
+//        ui.setState(snapshot);
+        double fit_value  ;
         double max = -9999;
         int best_x = 0 ;
         int best_m = 0 ;

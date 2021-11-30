@@ -2,7 +2,7 @@ import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 
 public class Tester extends Game{
-    private static int maxScore = 0 ;
+    public static int maxScore = 0 ;
     public static ArrayList<Integer> scores = new ArrayList<>();
     public static double average;
 
@@ -11,6 +11,8 @@ public class Tester extends Game{
     }
 
     public static void looper( int iteration , boolean isBetterBot, boolean isBot, boolean isDumbBot, boolean isDumbestBot) {
+        int min = 2000 ;
+        maxScore = 0 ;
         int[] temp_scores = new int[iteration];
         for (int i = 0; i < iteration; i++) {
             isGameOver = false;
@@ -33,8 +35,13 @@ public class Tester extends Game{
                     e.printStackTrace();
                 }
             }
+
             temp_scores[i] = score ;
             if(score > maxScore) maxScore = score ;
+
+            if(min < temp_scores[i]){
+                GeneticAlgorithm.min = temp_scores[i];
+            }
         }
             int sum = 0 ;
             for(int i =  0 ; i < iteration ; i++){

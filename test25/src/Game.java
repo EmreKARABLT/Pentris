@@ -13,7 +13,7 @@ public class Game extends java.util.Timer {
     public static boolean isGameOver = false;
     public static final int lineDeletionMax = 3;
     public static int tick = 500;
-    public static int botTick = 1;
+    public static int botTick = 500;
     public static int score = 0;
     public static int counter = 0 ;
     static int scoreForMove;
@@ -37,6 +37,7 @@ public class Game extends java.util.Timer {
     public static boolean isBot ;
     public static boolean isDumbBot ;
     public static boolean isDumbestBot ;
+    public static boolean isGAon = true ;
 
 
     public static ActionListener al = new ActionListener() {
@@ -112,7 +113,7 @@ public class Game extends java.util.Timer {
         field = createAnEmptyGrid(HEIGHT , WIDTH );
 //        piecePicker(false);
         placeTopPiece();
-        t =new Timer( (isPlayer) ? tick : botTick , al);
+        t =new Timer( (isPlayer) ? tick : (isGAon) ? 1 : botTick , al);
         t.start();
     }
     public static int[][] createAnEmptyGrid(int x , int y ){
@@ -167,6 +168,7 @@ public class Game extends java.util.Timer {
         if(!isGameOver && isValidPutPiece(field, piece, currentX, currentY)){
 
             if(!isPlayer) {
+
                 int[] x_m = new int[2];
                 if(isBot)
                     x_m = Bot.pickBestMove();
@@ -178,7 +180,8 @@ public class Game extends java.util.Timer {
                 piece = PentominoDatabase.data[pieceID][x_m[1]];
                 currentX = x_m[0];
                 addPiece(field , piece , x_m[0] , 0 );
-                instantDrop();
+                if(isGAon)
+                    instantDrop();
 //                int steps = Math.abs(x_m[0] - currentX);
 ////                remove(field , piece , currentX , currentY);
 //                for(int i = 0 ; i < steps ; i++){

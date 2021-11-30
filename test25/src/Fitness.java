@@ -9,13 +9,12 @@ public class Fitness{
     static double touchingSides = 0;
     static double touchingBottom = 0;
 
-    static double lineCleared_weight = 100;
-    static double height_weight = 1;
-    static double bumpiness_weight = 1.5;
-    static double holes_weight = 1.8;
-    static double sides_weight = 1;
-    static double bottom_weight = 1;
-    static double block_weight = 0;
+    static double lineCleared_weight = 0.5960609558893128;
+    static double height_weight =0.07919344275402873;
+    static double bumpiness_weight = 0.33518886508165924;
+    static double holes_weight =  0.7715510283474383;
+    static double sides_weight = 0.30251348397538314;
+    static double bottom_weight =0.3408992769961494;
 
     public static double calculateFitness(int[][] grid  ) {
 
@@ -146,8 +145,8 @@ public class Fitness{
                         (bumpFitness(grid) * bumpiness_weight) +
                         (holes(grid) * holes_weight) +
                         (touchingSides(grid) * sides_weight) +
-                        (touchingBottom(grid) * bottom_weight) +
-                        (blocking(grid) * block_weight);
+                        (touchingBottom(grid) * bottom_weight) ;
+//                        (blocking(grid) * block_weight);
         return fitnessValue;
     }
 

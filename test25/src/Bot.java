@@ -12,7 +12,6 @@ public class Bot extends Game implements ActionListener {
 
         super(false, false , true , false , false);
 
-
     }
     static KeyListener keys = new KeyListener() {
         @Override
@@ -27,7 +26,7 @@ public class Bot extends Game implements ActionListener {
     }
 
     public static void main(String[] args){
-        botTick = 3;
+        isGAon = false ;
         Tester.looper(1000 , true , false , false , false );
     }
 
