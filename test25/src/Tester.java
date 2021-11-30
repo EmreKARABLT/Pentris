@@ -1,4 +1,3 @@
-import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
 
 public class Tester extends Game{
@@ -17,15 +16,15 @@ public class Tester extends Game{
         for (int i = 0; i < iteration; i++) {
             isGameOver = false;
             score = 0 ;
-            Bot bot;
-            BetterBot betterBot ;
-            DumbBot dumbBot ;
-            DumbestBot dumbestBot;
+            Bot_smart botSmart;
+            Bot_6_factors sixfactorsbot;
+            Bot_height_based botHeightbased;
+            Bot_brute_force botBruteforce;
 
-            if (isBetterBot) betterBot = new BetterBot();
-            if (isBot) bot = new Bot();
-            if (isDumbBot) dumbBot = new DumbBot();
-            if (isDumbestBot) dumbestBot = new DumbestBot();
+            if (isBetterBot) sixfactorsbot = new Bot_6_factors();
+            if (isBot) botSmart = new Bot_smart();
+            if (isDumbBot) botHeightbased = new Bot_height_based();
+            if (isDumbestBot) botBruteforce = new Bot_brute_force();
 
 
             while(!isGameOver){

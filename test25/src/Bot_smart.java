@@ -1,14 +1,17 @@
-
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
+import java.util.Arrays;
 import java.util.Random;
 
-public class BetterBot extends Game implements ActionListener {
-    public BetterBot() {
-        super(false , true , false , false , false );
+public class Bot_smart extends Game implements ActionListener {
+    static boolean testmode = true;
+    public Bot_smart()  {
+
+        super(false, false , true , false , false);
+
     }
     static KeyListener keys = new KeyListener() {
         @Override
@@ -18,19 +21,25 @@ public class BetterBot extends Game implements ActionListener {
         @Override
         public void keyReleased(KeyEvent e) {}
     };
-        @Override
-        public void actionPerformed(ActionEvent e) {
-        }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+    }
 
+    public static void main(String[] args){
+        isGAon = false ;
+        Tester.looper(1000 , true , false , false , false );
+    }
 
 
     public static int[] pickBestMove(){
         Random ran = new Random();
         int[] bestPlacement = new int[2];
         int[][] snapshot = createAnEmptyGrid(HEIGHT , WIDTH );
-        if(isGameOver){ return bestPlacement ;}
-//        ui.setState(snapshot);
-        double fit_value  ;
+        if(isGameOver){
+            return bestPlacement ;
+        }
+        ui.setState(snapshot);
+        double fit_value = 0 ;
         double max = -9999;
         int best_x = 0 ;
         int best_m = 0 ;
@@ -46,7 +55,7 @@ public class BetterBot extends Game implements ActionListener {
                     snapshot = instantDropBot(snapshot, PentominoDatabase.data[pieceID][m], x, 0);
 
                 }
-                fit_value = Fitness.calculateOtherFitness(snapshot);
+                fit_value = Fitness.calculateFitness(snapshot);
 
 //
                 if( fit_value > max){
@@ -62,9 +71,4 @@ public class BetterBot extends Game implements ActionListener {
 
         return bestPlacement;
     }
-
-
-
-
-
 }

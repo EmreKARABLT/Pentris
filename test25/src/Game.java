@@ -171,11 +171,11 @@ public class Game extends java.util.Timer {
 
                 int[] x_m = new int[2];
                 if(isBot)
-                    x_m = Bot.pickBestMove();
+                    x_m = Bot_smart.pickBestMove();
                 if(isBetterBot)
-                    x_m = BetterBot.pickBestMove();
+                    x_m = Bot_6_factors.pickBestMove();
                 if(isDumbBot)
-                    x_m = DumbBot.pickBestMove();
+                    x_m = Bot_height_based.pickBestMove();
 
                 piece = PentominoDatabase.data[pieceID][x_m[1]];
                 currentX = x_m[0];
@@ -259,8 +259,6 @@ public class Game extends java.util.Timer {
                 }
             }
         }
-
-
         return grid;
     }
     public static int[][] remove(int[][] grid, int[][] piece , int x , int y ) {
@@ -275,21 +273,15 @@ public class Game extends java.util.Timer {
     }
     public static int[][] moveBottom(int[][] field   ) {
         if(isGameOver){return field;}
-        ui.setState(field);
         remove(field , piece  , currentX , currentY);
-
         if (currentY + piece.length < field.length && isValidPutPiece(field, piece, currentX, currentY + 1 ) ) {
             addPiece(field, piece, currentX , currentY + 1);
             currentY++;
-            ui.setState(field);
         }else{
             addPiece(field , piece , currentX , currentY);
-            ui.setState(field);
-//            piece = piecePicker(false);
             placeTopPiece();
         }
         ui.setState(field);
-
         return field;
     }
     public static int[][] instantDrop(){
@@ -412,7 +404,6 @@ public class Game extends java.util.Timer {
         }
     }
     public static int[][] rotationPlacer (int[][] nextMut, int[][] prevMut, int caseNumber){
-//        remove(field , piece );
         int x = currentX ;
         int y = currentY ;
         if (caseNumber == 1){
@@ -462,63 +453,35 @@ public class Game extends java.util.Timer {
     public static int scoreForMove(){
         scoreForMove = 0 ;
         for(int i = 0 ; i < HEIGHT ; i++){
-            boolean isFilled = true;
-            for (int j = 0; j < WIDTH; j++) {
-                if (field[i][j] == -1) {
-                    isFilled = false;
-                    break;
-                }
-
-            }
-            if( isFilled ){
+            if(isLineFull(field[i])){
                 scoreForMove++;
-                for(int l = 0 ; l < field[0].length ; l++){
-                    field[i][l] = -10;
-                }
             }
         }
         score+= scoreForMove;
         return scoreForMove;
     }
     public static void deleteLine(){
-
-
         int[] emptyRow = new int[WIDTH];
         Arrays.fill(emptyRow ,  -1 );
 
-        outer:
         for(int i = HEIGHT - 1 ; i >=1 ; i-- ){
-            if(field[i][0] == -10 ){
+            if( isLineFull(field[i] ) ){
                 for(int x = i ; x > 0 ; x--){
                     field[x] = field[x - 1];
                 }
                 field[0] = emptyRow;
-                break outer;
             }
         }
         ui.setState(field);
-
-
-//        outer:
-//        while(numberOfCompletedLines > 0 )
-//            for(int i = 0 ; i < HEIGHT ; i++){
-//                if(field[i][0] == -10){
-//                    score++;
-//                    System.out.printf("Your score = %d \n" ,score );
-//                    while(i>0) {
-//                        field[i] = emptyRow;
-//                        field[i] = field[i - 1];
-//                        i--;
-//                    }
-//                    field[i] = emptyRow;
-//                    numberOfCompletedLines--;
-//                    if(numberOfCompletedLines == 0 || i == 0 ){
-//                        break outer;
-//                    }
-//                }
-//            }
-//
-//        ui.setState(field);
+    }
+    public static boolean isLineFull(int[] line){
+        int counter = 0 ;
+        for (int square : line) {
+            if(square != -1 ){
+                counter++;
+            }
+        }
+        return counter == WIDTH;
     }
     public static int[][] nextMutation(int currentMutation) {
         int[][] pieceToPlace =PentominoDatabase.data[pieceID][currentMutation];
@@ -528,11 +491,11 @@ public class Game extends java.util.Timer {
         JFrame f = UI.window;
         f.addKeyListener(keys);
         Game g = new Game(true , false , false , false , false );
-        // ////// MUSIC ///////
-        // String Music = "Pentris.wav";
-        // Korobeiniki pentrisMusic = new Korobeiniki();
-        // pentrisMusic.pentrisMusic(Music);
-        // ///////////////////
+//         ////// MUSIC ///////
+//         String Music = "Pentris.wav";
+//         Korobeiniki pentrisMusic = new Korobeiniki();
+//         pentrisMusic.pentrisMusic(Music);
+//         ///////////////////
 
 
     }

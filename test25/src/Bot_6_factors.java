@@ -1,20 +1,14 @@
-import javax.sound.sampled.SourceDataLine;
-import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.Random;
 
-public class DumbBot extends Game implements ActionListener {
-    static boolean testmode = true;
-    Game game ;
-
-    public DumbBot(){
-        super(false , false , false , true , false );
+public class Bot_6_factors extends Game implements ActionListener {
+    public Bot_6_factors() {
+        super(false , true , false , false , false );
     }
     static KeyListener keys = new KeyListener() {
         @Override
@@ -24,24 +18,19 @@ public class DumbBot extends Game implements ActionListener {
         @Override
         public void keyReleased(KeyEvent e) {}
     };
-    @Override
-    public void actionPerformed(ActionEvent e) {
-    }
-
-    public static void main(String[] args) throws InterruptedException {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+        }
 
 
-    }
 
     public static int[] pickBestMove(){
         Random ran = new Random();
         int[] bestPlacement = new int[2];
         int[][] snapshot = createAnEmptyGrid(HEIGHT , WIDTH );
-        if(isGameOver){
-            return bestPlacement ;
-        }
-        ui.setState(snapshot);
-        double fit_value = 0 ;
+        if(isGameOver){ return bestPlacement ;}
+//        ui.setState(snapshot);
+        double fit_value  ;
         double max = -9999;
         int best_x = 0 ;
         int best_m = 0 ;
@@ -57,7 +46,7 @@ public class DumbBot extends Game implements ActionListener {
                     snapshot = instantDropBot(snapshot, PentominoDatabase.data[pieceID][m], x, 0);
 
                 }
-                fit_value = Fitness.heightFitness(snapshot);
+                fit_value = Fitness.calculateOtherFitness(snapshot);
 
 //
                 if( fit_value > max){
@@ -73,6 +62,8 @@ public class DumbBot extends Game implements ActionListener {
 
         return bestPlacement;
     }
+
+
 
 
 

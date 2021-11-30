@@ -1,17 +1,20 @@
+import javax.sound.sampled.SourceDataLine;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Bot extends Game implements ActionListener {
+public class Bot_height_based extends Game implements ActionListener {
     static boolean testmode = true;
-    public Bot()  {
+    Game game ;
 
-        super(false, false , true , false , false);
-
+    public Bot_height_based(){
+        super(false , false , false , true , false );
     }
     static KeyListener keys = new KeyListener() {
         @Override
@@ -25,11 +28,10 @@ public class Bot extends Game implements ActionListener {
     public void actionPerformed(ActionEvent e) {
     }
 
-    public static void main(String[] args){
-        isGAon = false ;
-        Tester.looper(1000 , true , false , false , false );
-    }
+    public static void main(String[] args) throws InterruptedException {
 
+
+    }
 
     public static int[] pickBestMove(){
         Random ran = new Random();
@@ -55,7 +57,7 @@ public class Bot extends Game implements ActionListener {
                     snapshot = instantDropBot(snapshot, PentominoDatabase.data[pieceID][m], x, 0);
 
                 }
-                fit_value = Fitness.calculateFitness(snapshot);
+                fit_value = Fitness.heightFitness(snapshot);
 
 //
                 if( fit_value > max){
@@ -71,4 +73,7 @@ public class Bot extends Game implements ActionListener {
 
         return bestPlacement;
     }
+
+
+
 }

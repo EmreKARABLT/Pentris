@@ -170,26 +170,26 @@ public class UI extends JPanel
      */
     public void setState(int[][] _state)
     {
-//        int currScore = Game.score;
-//        score.setText(String.valueOf(currScore));
-////              piece.setIcon(getnextIcon(Game.pieceIDS.get(1)));
-//
-//
-//
-//        for (int i = 0; i < state.length; i++)
-//        {
-//            for (int j = 0; j < state[i].length; j++)
-//            {
-//                state[i][j] = _state[i][j];
-//
-//
-//            }
-//
-//        }
-            // System.out.println(_state.length);
-            // System.out.println(_state[0].length);
-            //Tells the system a frame update is required
-//        repaint();
+        int currScore = Game.score;
+        score.setText(String.valueOf(currScore));
+//              piece.setIcon(getnextIcon(Game.pieceIDS.get(1)));
+
+
+
+        for (int i = 0; i < state.length; i++)
+        {
+            for (int j = 0; j < state[i].length; j++)
+            {
+                state[i][j] = _state[i][j];
+
+
+            }
+
+        }
+             System.out.println(_state.length);
+             System.out.println(_state[0].length);
+//            Tells the system a frame update is required
+        repaint();
     }
     private Icon getnextIcon(int i){
         if(i == 0){ return image0;

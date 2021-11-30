@@ -11,16 +11,16 @@
 //        for(int i = 0 ; i < iteration ; i++ ){
 //            isGameOver = false;
 //            score = 0 ;
-//                Bot bot = new Bot();
+//                Bot_smart bot = new Bot_smart();
 //
 ////            if (isBot) {
-////                Bot bot = new Bot();
+////                Bot_smart bot = new Bot_smart();
 ////            } else if (isDumbBot) {
-////                DumbBot bot = new DumbBot();
+////                Bot_height_based bot = new Bot_height_based();
 ////            } else if (isDumbestBot) {
-////                DumbestBot bot = new DumbestBot();
+////                Bot_brute_force bot = new Bot_brute_force();
 ////            } else if (isBetterBot) {
-////                BetterBot bot = new BetterBot();
+////                Bot_6_factors bot = new Bot_6_factors();
 ////            }
 //
 //        }

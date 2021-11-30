@@ -7,12 +7,12 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class DumbestBot extends Game implements ActionListener {
+public class Bot_brute_force extends Game implements ActionListener {
     static boolean testmode = false;
     private static boolean runItInfinitely = true ;
     private static int iteration = 10000 ;
     private static ArrayList<Integer> scores = new ArrayList<>();
-    public DumbestBot()  {
+    public Bot_brute_force()  {
         super(false , false , false , false , true );
     }
     static KeyListener keys = new KeyListener() {

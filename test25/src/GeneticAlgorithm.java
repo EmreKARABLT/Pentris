@@ -88,19 +88,20 @@ public class GeneticAlgorithm {
 
                 for (int z = 0; z < genes; z++) {
                     // We generate a random double from 0.00 to 1.00, if it's above 0.5 we take gene from mother, if its below we take gene from the father
-	                if(z <= k_point){
-						child[z] = mother[z];
-						child1[z] = father[z];
-					}else{
-                	    child[z] = father[z];
-                	    child1[z] = mother[z];
-                    }
-
-//                    if (rand < 0.5) {
-//                        child[z] = mother[z];
-//                    }else {
-//                        child[z] = father[z];
+                    //1-Point Crossover
+//	                if(z <= k_point){
+//						child[z] = mother[z];
+//						child1[z] = father[z];
+//					}else{
+//                	    child[z] = father[z];
+//                	    child1[z] = mother[z];
 //                    }
+                    //Discrete Crossover
+                    if (random.nextDouble() < 0.5) {
+                        child[z] = mother[z];
+                    }else {
+                        child[z] = father[z];
+                    }
                     // 3.2) Mutate if it rolls below the mutationRate
                     if (random.nextDouble()<=mutationRate){
                         child [z] = random.nextDouble();
@@ -109,14 +110,16 @@ public class GeneticAlgorithm {
                         child1[z] = random.nextDouble();
                     }
                 }
-//                    System.out.println("CHILD " + counterChild + " " +Arrays.toString(child));
-                newGen[counterChild]=child;
-                newGen[counterChild+1]=child1;
-                counterChild = counterChild + 2 ;
                 // 3.3) Add the child to the new generation arraylist
+                    //new generation when 1-point crossover used
+//                newGen[counterChild]=child;
+//                newGen[counterChild+1]=child1;
+//                counterChild = counterChild + 2 ;
+                    //new generation when discrete crossover used
+                newGen[counterChild] = child ;
+                counterChild++;
             }
         }
-//          System.out.println( "NEW GENERATION  " +(Arrays.deepToString(newGen)));
 
         // 4) Copy newGen to be current (new) generation (chromosomes[][]) and start from step one with new generation
         int indexOfMax = 0 ;
@@ -129,19 +132,11 @@ public class GeneticAlgorithm {
         }
 
 
-        // System.out.println( "NEW GENERATION  " +(Arrays.deepToString(chromosomes));
-//          getScores(chromosomes);
-
-        //System.out.println(Arrays.toString(scores));
 
         //////// STATISTICS /////////////
         double average = 0;
-//          double max = 0;
-//          double min = 999;
 
         for (double score : scores) {
-//               if(min>scores[i]) min = scores [i];
-//               if(max<scores[i]) max = scores[i];
             average += score;
         }
         average = average/scores.length;
@@ -159,7 +154,6 @@ public class GeneticAlgorithm {
 
         generation++;
 
-        ////////////////////////////////
     }
 
     public static double[][] getScores(double[][] chromosomes) {
@@ -173,19 +167,15 @@ public class GeneticAlgorithm {
             Fitness.holes_weight = chromosomes[i][3];
             Fitness.sides_weight = chromosomes[i][4];
             Fitness.bottom_weight = chromosomes[i][5];
-
-//               System.out.println("GAME " + i + "  -------- " + Arrays.toString(chromosomes[i]));
+            //looper let us run the bot, amount of iteration times, with same weights
             Tester.looper(200, true, false, false, false);
 
             scores[i] = Tester.average ;
         }
-//          System.out.println(Arrays.toString(scores));
         return chromosomes;
-        // NEEDS CONNECTION HERE, DUNNO HOW TO FEED THOSE TO THE GAME ENGINE
     }
 
     public static ArrayList<double[]> getParents(double[] score , double[][] chromosome , int parentNumber){
-//          parentNumber = ( parentNumber  ) * 4 ;
         ArrayList<Double> score_al = new ArrayList<>();
         ArrayList<double[]> chromosome_al = new ArrayList<>();
         ArrayList<double[]> parents_al= new ArrayList<>();
@@ -202,7 +192,6 @@ public class GeneticAlgorithm {
                     indexOfMax = i;
                 }
             }
-//               System.out.println(max );
             parents_al.add(chromosome_al.get(indexOfMax));
             score_al.remove(indexOfMax);
             chromosome_al.remove(indexOfMax);
