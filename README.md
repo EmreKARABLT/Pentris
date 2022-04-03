@@ -76,4 +76,3 @@ Run BOTS
 LEADERBOARD
 -> Press the leaderboard button on the home-screen.
 
-Extract the provided 25-CodeSecondPhase.zip. Follow the instructions listed above.
