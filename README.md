@@ -39,7 +39,7 @@ The "Pentris" bot (self-playing version) is a bot made by group 25. It works in 
 4) Until it is possible to spawn a new piece in the top of the field it starts from the step 2. 
 
 Genetic algorithm (optimizing self-playing version of the game). This algorithm let's us to find out the importance of each fitness test. Pseudocode for this algorithm:
-
+```javascript
 GeneticAlgorithm():
 INITIALIZE random 1st generation;
 FOR (g = 1 to N(gen)) DO
@@ -59,7 +59,7 @@ FOR (g = 1 to N(gen)) DO
 Move 4 new generated individuals to g+1;
 	END FOR;
 END FOR;
-
+```
 User Instructions:
 For further reference besides this README, check the javadoc folder.
 To run either the game, see the bots in action or check the top-10 leaderboard. Run the Sigma.java file provided in the src folder.
